@@ -2,16 +2,14 @@ import qs from 'qs';
 import url from 'url';
 import md5 from 'md5';
 class ApiSign{
-  constructor(appId,secret){
+  constructor(appId,secret,extra = {}){
     this.appId = appId,
     this.secret = secret;
     this.debug = false;
-    if(process.env.NODE_ENV != 'production'){
-      this.debug = true;
+    if(extra.debug){
+      this.debug = extra.debug;
     }
-    console.log(process.env.NODE_ENV);
   }
-
   sign(uri,options){
     const urlParams = qs.parse(url.parse(uri).query);
 

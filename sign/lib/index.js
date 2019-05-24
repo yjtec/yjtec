@@ -26,14 +26,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var ApiSign = function () {
   function ApiSign(appId, secret) {
+    var extra = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
     _classCallCheck(this, ApiSign);
 
     this.appId = appId, this.secret = secret;
     this.debug = false;
-    if (process.env.NODE_ENV != 'production') {
-      this.debug = true;
+    if (extra.debug) {
+      this.debug = extra.debug;
     }
-    console.log(process.env.NODE_ENV);
   }
 
   _createClass(ApiSign, [{
