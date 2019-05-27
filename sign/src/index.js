@@ -11,6 +11,9 @@ class ApiSign{
     }
   }
   sign(uri,options){
+    if(process.env.NODE_ENV != 'production'){
+      return {...options}
+    }
     const urlParams = qs.parse(url.parse(uri).query);
 
     let postParams = {};

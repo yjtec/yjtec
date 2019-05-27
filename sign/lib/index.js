@@ -40,6 +40,9 @@ var ApiSign = function () {
   _createClass(ApiSign, [{
     key: 'sign',
     value: function sign(uri, options) {
+      if (process.env.NODE_ENV != 'production') {
+        return _extends({}, options);
+      }
       var urlParams = _qs2.default.parse(_url2.default.parse(uri).query);
 
       var postParams = {};
