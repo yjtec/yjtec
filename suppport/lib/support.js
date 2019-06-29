@@ -13,6 +13,9 @@ exports.inArray = inArray;
 exports.strRandom = strRandom;
 exports.isStr = isStr;
 var random = require('string-random');
+var Local = require('./local');
+var Obj = require('./obj');
+var Arr = require('./arr');
 function isArray(arr) {
   if (typeof Array.isArray === 'function') {
     return Array.isArray(arr);
@@ -40,3 +43,7 @@ function strRandom(len) {
 function isStr(str) {
   return typeof str == 'string';
 }
+
+exports.Local = Local;
+exports.Obj = Obj;
+exports.Arr = Arr;

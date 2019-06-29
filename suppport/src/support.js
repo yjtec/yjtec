@@ -1,4 +1,7 @@
 const random = require('string-random');
+const Local = require('./local');
+const Obj = require('./obj');
+const Arr = require('./arr');
 export function isArray(arr) {
   if(typeof Array.isArray === 'function') {
     return Array.isArray(arr);
@@ -21,4 +24,10 @@ export function strRandom(len,opts={}){
 }
 export function isStr(str){
   return typeof str =='string'; 
+}
+
+export {
+  Local,
+  Obj,
+  Arr
 }
