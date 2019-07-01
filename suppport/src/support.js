@@ -26,6 +26,10 @@ export function isStr(str){
   return typeof str =='string'; 
 }
 
+//驼峰装-
+export function cc2(str,split = '-'){
+  return str.replace(/([A-Z])/g,"-$1").toLowerCase();
+}
 export {
   Local,
   Obj,

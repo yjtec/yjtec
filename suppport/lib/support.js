@@ -12,6 +12,7 @@ exports.isNullArray = isNullArray;
 exports.inArray = inArray;
 exports.strRandom = strRandom;
 exports.isStr = isStr;
+exports.cc2 = cc2;
 var random = require('string-random');
 var Local = require('./local');
 var Obj = require('./obj');
@@ -44,6 +45,12 @@ function isStr(str) {
   return typeof str == 'string';
 }
 
+//驼峰装-
+function cc2(str) {
+  var split = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '-';
+
+  return str.replace(/([A-Z])/g, "-$1").toLowerCase();
+}
 exports.Local = Local;
 exports.Obj = Obj;
 exports.Arr = Arr;
