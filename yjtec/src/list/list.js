@@ -10,7 +10,8 @@ class Index extends React.Component{
       loading,
 
     } = this.props;
-    const {columns,page,operator} = field;
+    const {columns,page,operator,table} = field;
+
     const tableColumns = Object.keys(columns).map(item => { 
       var obj = { 
         title:columns[item].label,
@@ -38,6 +39,7 @@ class Index extends React.Component{
           dataSource={data}
           pagination={pageProps}
           loading={loading}
+          {...table}
         />
       </div>
     );

@@ -58,7 +58,9 @@ var Index = function (_React$Component) {
           loading = _props.loading;
       var columns = field.columns,
           page = field.page,
-          operator = field.operator;
+          operator = field.operator,
+          table = field.table;
+
 
       var tableColumns = Object.keys(columns).map(function (item) {
         var obj = {
@@ -81,13 +83,13 @@ var Index = function (_React$Component) {
         { className: styles.tableList },
         _react2.default.createElement('div', { className: styles.tableListForm }),
         operator && operator,
-        _react2.default.createElement(_table2.default, {
+        _react2.default.createElement(_table2.default, _extends({
           rowKey: 'id',
           columns: tableColumns,
           dataSource: data,
           pagination: pageProps,
           loading: loading
-        })
+        }, table))
       );
     }
   }]);
