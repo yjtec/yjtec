@@ -89,6 +89,7 @@ var Index = function (_React$Component) {
         } else {
           var _this$state3 = _this.state,
               mch_id = _this$state3.mch_id,
+              secret = _this$state3.secret,
               partner_key = _this$state3.partner_key,
               cert = _this$state3.cert,
               key = _this$state3.key;
@@ -97,6 +98,7 @@ var Index = function (_React$Component) {
           values.partner_key = partner_key;
           values.cert = cert;
           values.key = key;
+          values.secret = secret;
         }
         if (onChange) onChange(values);
       });
@@ -144,6 +146,11 @@ var Index = function (_React$Component) {
             FormItem,
             { style: { marginBottom: 0 } },
             _react2.default.createElement(_input2.default, { placeholder: 'mch_id', name: 'mch_id', value: this.state.mch_id, onChange: this.handleChange })
+          ),
+          _react2.default.createElement(
+            FormItem,
+            { style: { marginBottom: 0 } },
+            _react2.default.createElement(_input2.default, { placeholder: 'secret', name: 'secret', value: this.state.secret, onChange: this.handleChange })
           ),
           _react2.default.createElement(
             FormItem,
