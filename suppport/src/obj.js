@@ -26,6 +26,7 @@ export function in_keys(obj,key){
     for(var i in obj){
       if(i == key){
         flag = true;
+        break;
       }
     }
   }
