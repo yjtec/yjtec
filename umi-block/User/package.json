@@ -1,0 +1,26 @@
+{
+  "name": "@umi-block/User",
+  "version": "0.0.1",
+  "description": "yjtec user page",
+  "main": "src/index.js",
+  "authors": {
+    "name": "kidkang",
+    "email": "723616880@qq.com"
+  },
+  "repository": "https://github.com/yjtec/yjtec/tree/master/umi-block/User",
+  "scripts": {
+    "dev": "umi dev"
+  },
+  "dependencies": {
+    "qs": "^6.7.0",
+    "react": ">=16.0.0",
+    "umi-plugin-react": "^1.9.10",
+    "umi-request": "^1.1.0"
+  },
+  "devDependencies": {
+    "@ant-design/pro-layout": "^4.5.10",
+    "umi": "^2.0.0",
+    "umi-plugin-block-dev": "^2.2.1"
+  },
+  "license": "MIT"
+}
