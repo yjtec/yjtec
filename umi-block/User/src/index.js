@@ -24,7 +24,12 @@ class PAGE_NAME_UPPER_CAMEL_CASE extends Component{
     }
   }
   componentDidMount(){
+    const {dispatch} = this.props;
+    dispatch({
+      type:'BLOCK_NAME_CAMEL_CASE/fetchRole'
+    })    
     this.handleFetch({});
+    
   }
   handleAdd = () => {
     this.setState({visible:true})
@@ -46,8 +51,6 @@ class PAGE_NAME_UPPER_CAMEL_CASE extends Component{
         })        
       }
     })
-
-    
   }
   handleEdit = record => {
     const {dispatch} = this.props;

@@ -1,11 +1,25 @@
-import { query,fetchSave,fetchDelete,fetchPut,fetchOne,fetchMul} from './service';
+import { query,fetchSave,fetchDelete,fetchPut,fetchOne,fetchMul,fetchRole} from './service';
 import {message} from 'antd';
+const format = data => {
+  return data.map(item => {
+    const result = {
+      title:item.title,
+      value:item.id
+    }
+    if(item.children){
+      const children = format(item.children);
+      result.children = children;
+    }
+    return result;
+  })
+}
 export default { 
   namespace:'BLOCK_NAME_CAMEL_CASE',
   state:{
     data:[],
     pagination:{page:1,pageSize:10,total:0},
     one:[],
+    role:[],
     handleItem:{
       disable:{label:'禁用',value:'-1'},
       enable:{label:'启用',value:'1'}
@@ -18,6 +32,14 @@ export default {
       yield put({
         type:'saveFetch',
         payload:re
+      })
+    },
+    *fetchRole({payload},{call,put,select}){
+      const re = yield call(fetchRole);
+
+      yield put({
+        type:'saveRole',
+        payload:format(re)
       })
     },
     *fetchSave({payload,callback},{call,put,select}){
@@ -73,6 +95,12 @@ export default {
           pageSize:Number(payload.per_page)
         }
       };
+    },
+    saveRole(state,{payload}){
+      return {
+        ...state,
+        role:payload
+      }
     },
     saveOne(state,{payload}){
       const one = payload;

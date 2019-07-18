@@ -26,6 +26,15 @@ export default class List extends Component{
     dataIndex:'account',
     key:'account'
   },{
+    title:'角色',
+    dataIndex:'roles',
+    key:'roles',
+    render:value => <div>
+      {value.map(item=>
+        <Tag key={item.id} color="gold">{item.title}</Tag>
+      )}
+    </div>
+  },{
     title:'昵称',
     dataIndex:'nick_name',
     key:'nick_name'

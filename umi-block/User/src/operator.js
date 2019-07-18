@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {Form,Row,Col,Input,Select,DatePicker,Button,Icon} from 'antd';
 import styles from './style.less';
+import Role from './role';
 const {RangePicker} = DatePicker;
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -86,11 +87,8 @@ class Operator extends Component{
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="角色">
-            {getFieldDecorator('status')(
-              <Select style={{width:'100%'}} placeholder="角色">
-                <Option value="1">超级管理员</Option>
-                <Option value="-1">普通管理员</Option>
-              </Select>
+            {getFieldDecorator('roles')(
+              <Role />
             )}
             </FormItem>
           </Col>

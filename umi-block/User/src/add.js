@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import {Modal,Form,Input} from 'antd';
 import styles from './index.css';
 import Avatar from './avatar';
+import Role from './role';
 const FormItem =  Form.Item;
 class Add extends Component{
   handleSubmit = e => {
@@ -19,6 +20,7 @@ class Add extends Component{
     const {
       visible,
       onCancel,
+      role,
       form:{getFieldDecorator}
     } = this.props;
     const formItemLayout = {
@@ -42,7 +44,7 @@ class Add extends Component{
           <FormItem label="头像">
             {getFieldDecorator('avatar',{
               rules:[{required:true,message:'头像不得为空'}]
-            })(<Avatar />)}            
+            })(<Avatar />)}
           </FormItem>
           <FormItem label="账号">
           {getFieldDecorator('account',{
@@ -54,6 +56,12 @@ class Add extends Component{
           {getFieldDecorator('nick_name',{
             rules:[{required:true,message:'请输入昵称'}]
           })(<Input />)}
+          </FormItem>
+
+          <FormItem label="角色">
+          {getFieldDecorator('roles',{
+            rules:[{required:true,message:'请选择一个角色'}]
+          })(<Role />)}
           </FormItem>
 
           <FormItem label="邮箱">
