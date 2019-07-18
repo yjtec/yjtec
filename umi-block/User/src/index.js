@@ -1,21 +1,26 @@
-import React,{Component} from 'react';
+import React,{Component,Fragment} from 'react';
 import styles from './style.less';
-import {Card,Button} from 'antd';
+import {Card,Button,Menu,Dropdown,Icon} from 'antd';
 import {connect} from 'dva';
 import Add from './add';
 import List from './list';
+import Edit from './edit';
 import Operator from './operator';
 @connect(({ loading, BLOCK_NAME_CAMEL_CASE }) => ({
   data: BLOCK_NAME_CAMEL_CASE,
   loading: loading.effects['BLOCK_NAME_CAMEL_CASE/fetch'],
+  eloading: loading.effects['BLOCK_NAME_CAMEL_CASE/fetchOne']
 }))
 class PAGE_NAME_UPPER_CAMEL_CASE extends Component{
   constructor(props) {
     super(props);
     this.state ={
       visible:false,
+      editVisible:false,
       selectedRows:[],
-      search:{}
+      search:{},
+      data:{}, //编辑的数据
+      mulHandle:''
     }
   }
   componentDidMount(){
@@ -25,21 +30,31 @@ class PAGE_NAME_UPPER_CAMEL_CASE extends Component{
     this.setState({visible:true})
   }
   handleCancel = () => {
-    this.setState({visible:false})
+    this.setState({
+      visible:false,
+      editVisible:false
+    })
   }
   handleOk = (values) => {
     const {dispatch} = this.props;
     dispatch({
       type:'BLOCK_NAME_CAMEL_CASE/fetchSave',
-      payload:values
+      payload:values,
+      callback:()=>{
+        this.setState({
+          visible:false
+        })        
+      }
     })
 
-    this.setState({
-      visible:false
-    })
+    
   }
   handleEdit = record => {
-    console.log(record);
+    const {dispatch} = this.props;
+    dispatch({
+      type:'BLOCK_NAME_CAMEL_CASE/fetchOne',
+      payload:record.id
+    })
   }
   handleDelete = id => {
     const {dispatch} = this.props;
@@ -78,10 +93,23 @@ class PAGE_NAME_UPPER_CAMEL_CASE extends Component{
   handleReset = () => {
     this.handleFetch({})
   }
+  handleMenuClick = type => {
+    this.listRef.cleanSelectedKeys();
+    this.setState({
+      mulHandle:type,
+      selectedRows:[]
+    })
+  }
   render(){
-    const {visible,selectedRows} = this.state;
-    const {data} = this.props;
-    //console.log(data);
+    const {visible,editVisible,selectedRows,mulHandle} = this.state;
+    const {eloading,data:{handleItem}} = this.props;
+    const menu = (
+      <Menu onClick={e => this.handleMenuClick(e.key)}>
+        {Object.keys(handleItem).map(item =>
+          <Menu.Item key={item}>{handleItem[item].label}</Menu.Item>
+        )}
+      </Menu>
+    )
     return (
       <div className={styles.TableList}>
         <Add 
@@ -89,6 +117,12 @@ class PAGE_NAME_UPPER_CAMEL_CASE extends Component{
           onCancel={this.handleCancel}
           onOk={this.handleOk}
         />
+          {eloading === false && (<Edit
+            {...this.props}
+            // visible={editVisible}
+            // onCancel={this.handleCancel}
+          />)
+        }
         <Card>
           <div className={styles.form}>
           <Operator {...this.props} 
@@ -97,19 +131,35 @@ class PAGE_NAME_UPPER_CAMEL_CASE extends Component{
           />
           </div>
           <div className={styles.operator}>
-            <Button onClick={this.handleAdd} type="primary">新建</Button>
-            {selectedRows.length > 0 && (
-            <span>
-              <Button >禁用</Button>
-            </span>
+            {mulHandle ? (
+              <Fragment>
+                <span>
+                  <Button disabled={selectedRows.length == 0} type="primary" >
+                  {handleItem[mulHandle].label}
+                  </Button>
+                </span>
+                <Button onClick={()=>this.handleMenuClick('')}>取消</Button>
+              </Fragment>
+            ):(
+            <Fragment>
+              <Button onClick={this.handleAdd} type="primary">新建</Button>
+              <Dropdown overlay={menu}>
+                <Button>
+                  批量操作 <Icon type="down" />
+                </Button>
+              </Dropdown>
+            </Fragment>
             )}
           </div>
           <List 
             {...this.props}
+            mulHandle={mulHandle}
+            selectedRows={selectedRows}
             onEdit={this.handleEdit}
             onDelete={this.handleDelete}
             onSelectRow={this.handleSelectRows}
             onPageChange={this.handlePageChange}
+            ref={ref => this.listRef = ref}
           />
         </Card>
       </div>

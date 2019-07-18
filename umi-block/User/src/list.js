@@ -17,6 +17,11 @@ export default class List extends Component{
     dataIndex:'id',
     key:'id'
   },{
+    title:'头像',
+    dataIndex:'avatar_url',
+    key:'avatar_url',
+    render:value => <img width="40" src={value} />
+  },{
     title:'账号',
     dataIndex:'account',
     key:'account'
@@ -74,18 +79,21 @@ export default class List extends Component{
   };
   render(){
     const {
-      data:{data,pagination}
+      data:{data,pagination,handleItem},
+      mulHandle,
+      selectedRows
     } = this.props;
     const {selectedRowKeys} = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.handleRowSelectChange,
       getCheckboxProps: record => ({
-        disabled: record.status == '-1',
+        disabled: record.status == handleItem[mulHandle].value,
       })
     }
     return(
       <div className={styles.table}>
+        {mulHandle && (
         <div className={styles.alert}>
           <Alert
             message ={
@@ -98,11 +106,12 @@ export default class List extends Component{
             showIcon
           />
         </div>
+        )}
         <Table 
           columns={this.columns} 
           dataSource={data} 
           rowKey="id"
-          rowSelection={rowSelection}
+          {...(mulHandle ? {rowSelection:rowSelection} : {})}
           pagination={{
             onChange:this.handlePage,
             ...pagination

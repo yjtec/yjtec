@@ -1,11 +1,15 @@
-import { query,fetchSave,fetchDelete,fetchPut} from './service';
+import { query,fetchSave,fetchDelete,fetchPut,fetchOne} from './service';
 import {message} from 'antd';
-
 export default { 
   namespace:'BLOCK_NAME_CAMEL_CASE',
   state:{
     data:[],
-    pagination:{page:1,pageSize:10,total:0}
+    pagination:{page:1,pageSize:10,total:0},
+    one:[],
+    handleItem:{
+      disable:{label:'禁用',value:'-1'},
+      enable:{label:'启用',value:'1'}
+    }
   },
   effects: {
     *fetch({payload}, { call, put,select }) {
@@ -16,33 +20,43 @@ export default {
         payload:re
       })
     },
-    *fetchSave({payload},{call,put,select}){
+    *fetchSave({payload,callback},{call,put,select}){
       const re = yield call(fetchSave,payload);
-      if(re['errcode'] && re['errcode'] != 0 ){
-        message.error(re['errmsg']);
-        return false;
+      if(re){
+        if(callback) callback();
+        yield put({
+          type:'fetch'
+        })
       }
-
+      
+    },
+    *fetchOne({payload},{call,put}){
+      const re = yield call(fetchOne,payload);
       yield put({
-        type:'fetch'
+        type:'saveOne',
+        payload:re
       })
     },
     *fetchDelete({payload},{call,put,select}){
       const re = yield call(fetchDelete,payload);
-      if(re['errcode'] && re['errcode'] != 0 ){
-        message.error(re['errmsg']);
-        return false;
-      }
-
       yield put({
         type:'fetch'
       })
+    },
+    *fetchPut({payload},{call,put,select}){
+      const re = yield call(fetchPut,payload.id,payload.data);
+      if(re){
+        yield put({
+          type:'fetch'
+        })
+      }
     }
   },
 
   reducers: {
     saveFetch(state, {payload}) {
       return {
+        ...state,
         data: payload.data,
         pagination:{
           page:Number(payload.current_page),
@@ -51,5 +65,9 @@ export default {
         }
       };
     },
+    saveOne(state,{payload}){
+      const one = payload;
+      return {...state,one}
+    }
   }
 }

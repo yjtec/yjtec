@@ -6,6 +6,10 @@ Object.defineProperty(exports, "__esModule", {
 
 var _umiRequest = require('umi-request');
 
+var _antd = require('antd');
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 var codeMessage = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
@@ -27,12 +31,56 @@ var codeMessage = {
 var errorHandler = function errorHandler(error) {
   var _error$response = error.response,
       response = _error$response === undefined ? {} : _error$response;
-
-  console.log(response);
 };
 var request = (0, _umiRequest.extend)({
   errorHandler: errorHandler,
   credentials: 'include' // 默认请求是否带上cookie
 });
+request.interceptors.response.use(function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(response, options) {
+    var data;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return response.clone().json();
 
+          case 2:
+            data = _context.sent;
+
+            if (!(data.errcode != undefined && data.errcode != 0)) {
+              _context.next = 6;
+              break;
+            }
+
+            _antd.message.error(data.errmsg);
+            return _context.abrupt('return', false);
+
+          case 6:
+
+            if (options.method == 'DELETE' && data.errcode == 0) {
+              //成功的提示
+              _antd.message.success(data.errmsg);
+            }
+
+            // if (data.errcode !== undefined && data.errcode != 0) {
+            //   message.error(data.errmsg);
+            //   return false;
+            // }
+            //response.headers.append('interceptors', 'yes yo');
+            return _context.abrupt('return', response);
+
+          case 8:
+          case 'end':
+            return _context.stop();
+        }
+      }
+    }, _callee, undefined);
+  }));
+
+  return function (_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+}());
 exports.default = request;

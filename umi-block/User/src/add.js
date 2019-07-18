@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import {Modal,Form,Input} from 'antd';
 import styles from './index.css';
+import Avatar from './avatar';
 const FormItem =  Form.Item;
 class Add extends Component{
   handleSubmit = e => {
@@ -38,6 +39,11 @@ class Add extends Component{
         onOk={this.handleSubmit}
       >
         <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+          <FormItem label="头像">
+            {getFieldDecorator('avatar',{
+              rules:[{required:true,message:'头像不得为空'}]
+            })(<Avatar />)}            
+          </FormItem>
           <FormItem label="账号">
           {getFieldDecorator('account',{
             rules:[{required:true,message:'请输入用户名'}]

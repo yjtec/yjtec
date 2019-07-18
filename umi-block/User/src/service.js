@@ -18,3 +18,15 @@ export async function fetchDelete(id){
     method:'delete'
   });
 }
+
+export async function fetchOne(id){
+  return request(`/api/user/${id}`);
+}
+
+export async function fetchPut(id,data){
+  return request(`/api/user/${id}`,{
+    method:'put',
+    data:data,
+    requestType: 'form',
+  })
+}
