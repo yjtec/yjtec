@@ -100,6 +100,20 @@ class PAGE_NAME_UPPER_CAMEL_CASE extends Component{
       selectedRows:[]
     })
   }
+  handleMulAction = () => {
+    const {dispatch} = this.props;
+    const {selectedRows,mulHandle} = this.state;
+    dispatch({
+      type:'BLOCK_NAME_CAMEL_CASE/fetchMul',
+      payload:{
+        key:selectedRows.map(row => row.id).join(','),
+        type:mulHandle
+      },
+      callback:() =>{
+        this.handleMenuClick('');
+      }
+    })
+  }
   render(){
     const {visible,editVisible,selectedRows,mulHandle} = this.state;
     const {eloading,data:{handleItem}} = this.props;
@@ -134,7 +148,7 @@ class PAGE_NAME_UPPER_CAMEL_CASE extends Component{
             {mulHandle ? (
               <Fragment>
                 <span>
-                  <Button disabled={selectedRows.length == 0} type="primary" >
+                  <Button onClick={this.handleMulAction} disabled={selectedRows.length == 0} type="primary" >
                   {handleItem[mulHandle].label}
                   </Button>
                 </span>

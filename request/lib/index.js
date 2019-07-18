@@ -58,20 +58,17 @@ request.interceptors.response.use(function () {
             return _context.abrupt('return', false);
 
           case 6:
-
             if (options.method == 'DELETE' && data.errcode == 0) {
               //成功的提示
               _antd.message.success(data.errmsg);
             }
+            if (options.alert != undefined) {
+              _antd.message.success(data.errmsg);
+            }
 
-            // if (data.errcode !== undefined && data.errcode != 0) {
-            //   message.error(data.errmsg);
-            //   return false;
-            // }
-            //response.headers.append('interceptors', 'yes yo');
             return _context.abrupt('return', response);
 
-          case 8:
+          case 9:
           case 'end':
             return _context.stop();
         }

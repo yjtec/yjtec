@@ -1,7 +1,9 @@
 import {
   extend
 } from 'umi-request';
-import {message} from 'antd';
+import {
+  message
+} from 'antd';
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
@@ -29,22 +31,19 @@ const request = extend({
   errorHandler,
   credentials: 'include', // 默认请求是否带上cookie
 });
-request.interceptors.response.use(async (response,options) => {
+request.interceptors.response.use(async (response, options) => {
   const data = await response.clone().json();
-  if(data.errcode != undefined && data.errcode != 0){
+  if (data.errcode != undefined && data.errcode != 0) {
     message.error(data.errmsg);
     return false;
   }
-
-  if(options.method == 'DELETE' && data.errcode == 0){ //成功的提示
+  if (options.method == 'DELETE' && data.errcode == 0) { //成功的提示
     message.success(data.errmsg);
   }
-
-  // if (data.errcode !== undefined && data.errcode != 0) {
-  //   message.error(data.errmsg);
-  //   return false;
-  // }
-  //response.headers.append('interceptors', 'yes yo');
+  if (options.alert != undefined) {
+    message.success(data.errmsg);
+  }
+  
   return response;
 });
 export default request;

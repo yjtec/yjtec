@@ -30,3 +30,13 @@ export async function fetchPut(id,data){
     requestType: 'form',
   })
 }
+
+export async function fetchMul(data){
+  //console.log(stringify(data));
+  return request(`/api/user/mul`,{
+    method:'post',
+    data:data,
+    alert:0,
+    requestType:'form'
+  })
+}

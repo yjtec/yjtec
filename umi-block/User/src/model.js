@@ -1,4 +1,4 @@
-import { query,fetchSave,fetchDelete,fetchPut,fetchOne} from './service';
+import { query,fetchSave,fetchDelete,fetchPut,fetchOne,fetchMul} from './service';
 import {message} from 'antd';
 export default { 
   namespace:'BLOCK_NAME_CAMEL_CASE',
@@ -46,6 +46,15 @@ export default {
     *fetchPut({payload},{call,put,select}){
       const re = yield call(fetchPut,payload.id,payload.data);
       if(re){
+        yield put({
+          type:'fetch'
+        })
+      }
+    },
+    *fetchMul({payload,callback},{call,put,select}){
+      const re = yield call(fetchMul,payload);
+      if(re){
+        callback();
         yield put({
           type:'fetch'
         })
