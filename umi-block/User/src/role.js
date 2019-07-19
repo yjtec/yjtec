@@ -12,7 +12,10 @@ export default class Role extends Component{
     value:[]
   }
   componentDidMount(){
-    console.log(this.props);
+    const {value} = this.props;
+    this.setState({
+      value:value
+    })
   }
   onChange = value => {
     const {onChange} = this.props;

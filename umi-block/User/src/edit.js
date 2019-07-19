@@ -54,9 +54,7 @@ class Edit extends Component{
       data:{one},
       form:{getFieldDecorator}
     } = this.props;
-    //const role = one.role.map(item => item.id);
-    console.log(one);
-    console.log(role);
+    const roles = one.roles.map(item => item.id);
     const {visible} = this.state;
     const formItemLayout = {
       labelCol: {
@@ -90,7 +88,8 @@ class Edit extends Component{
             </FormItem>
             <FormItem label="角色">
             {getFieldDecorator('roles',{
-              rules:[{required:true,message:'请选择一个角色'}]
+              rules:[{required:true,message:'请选择一个角色'}],
+              initialValue:roles
             })(<Role />)}
           </FormItem>            
             <FormItem label="邮箱">

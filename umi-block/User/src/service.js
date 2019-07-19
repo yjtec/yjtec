@@ -2,6 +2,9 @@ import request from 'yjtec-request';
 import {
   stringify
 } from 'qs';
+function formatRoles(data){
+  return stringify({roles:data},{arrayFormat:'indices'});
+}
 export async function query($params) {
   return request(`/api/user?${stringify($params,{arrayFormat:'indices'})}`);
 }
@@ -26,7 +29,9 @@ export async function fetchOne(id){
 }
 
 export async function fetchPut(id,data){
-  return request(`/api/user/${id}`,{
+  const roles = formatRoles(data.roles);
+  delete data.roles;
+  return request(`/api/user/${id}?${roles}`,{
     method:'put',
     data:data,
     requestType: 'form',
