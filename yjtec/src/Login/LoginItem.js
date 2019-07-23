@@ -4,11 +4,18 @@ import { Form, Input, Button, Row, Col } from 'antd';
 import LoginContext from './loginContext';
 const FormItem = Form.Item;
 class WrapFormItem extends Component{
+  componentDidMount(){
+    const {updateActive,name} = this.props;
+    if(updateActive){
+      updateActive(name);
+    }
+  }
   render(){
     const {
       form: { getFieldDecorator },
       name,
-      customprops
+      customprops,
+      updateActive
     } = this.props;
     //console.log(this.props);
     return(
@@ -30,6 +37,7 @@ Object.keys(ItemMap).forEach(key => {
           rules={item.rules}
           {...props}
           type={key}
+          updateActive={context.updateActive}
           form={context.form}
         />
       )}

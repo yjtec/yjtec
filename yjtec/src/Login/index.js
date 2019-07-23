@@ -9,17 +9,60 @@ class Login extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      type:props.defaultActiveKey
+      type:props.defaultActiveKey,
+      tabs:[],
+      active:{}
     }
   }
+  onSwitch = type => {
+    this.setState({
+      type
+    })
+    const {onTabChange} = this.props;
+    onTabChange(type);
+  }
   getContext = () => {
+    const {tabs} = this.state;
     const {form} = this.props;
     return {
-      form
+      tabUtil:{
+        addTab: id => {
+          this.setState({
+            tabs:[...tabs,id],
+          })
+        },
+        removeTab: id => {
+          this.setState({
+            tabs:tabs.filter(currentId => currentId !== id),
+          })
+        }
+      },
+      form,
+      updateActive:activeItem => {
+        const {type,active} = this.state;
+        if(active[type]){
+          active[type].push(activeItem);
+        }else{
+          active[type] = [activeItem];
+        }
+        this.setState({
+          active
+        })
+      }
     }
+  }
+  handleSubmit = e =>{
+    e.preventDefault();
+    const {type,active} = this.state;
+    const {form,onSubmit} = this.props;
+    const activeFileds = active[type];
+    form.validateFields(activeFileds,{force:true},(err,values)=>{
+      onSubmit(err,values);
+    })
   }
   render(){
     const {children} = this.props;
+    const {type,tabs} = this.state;
     const TabChildren = [];
     const otherChildren = [];
     React.Children.forEach(children,item => {
@@ -36,11 +79,13 @@ class Login extends Component{
     return (
       <LoginContext.Provider value={this.getContext()}>
         <div className={styles.login}>
-          <Form>
+          <Form onSubmit={this.handleSubmit}>
             <React.Fragment>
               <Tabs 
                 animated={false}
                 className={styles.tabs}
+                activeKey={type}
+                onChange={this.onSwitch}
                 >
                 {TabChildren}
               </Tabs>

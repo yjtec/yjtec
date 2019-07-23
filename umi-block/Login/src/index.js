@@ -19,6 +19,22 @@ class LoginPage extends Component{
       autoLogin:e.target.checked
     })
   }
+  handleSubmit = (err,values) =>{
+    const {type} = this.state;
+    if(!err){
+      const{ dispatch} = this.props;
+      dispatch({
+        type:"BLOCK_NAME_CAMEL_CASE/login",
+        payload:{
+          ...values,
+          type
+        }
+      })
+    }
+  }
+  onTabChange = type => {
+    this.setState({type})
+  }
   render(){
     const {BLOCK_NAME_CAMEL_CASE,submitting}  = this.props;
     const {type,autoLogin} = this.state;
@@ -26,10 +42,12 @@ class LoginPage extends Component{
       <div className={styles.main}>
         <Login
           defaultActiveKey={type}
+          onSubmit = {this.handleSubmit}
+          onTabChange={this.onTabChange}
           >
           <Tab key="account" tab={formatMessage({id:'BLOCK_NAME.login.tab-login-credentials'})}>
             <UserName
-              name="userName"
+              name="account"
               placeholder={`${formatMessage({ id: 'BLOCK_NAME.login.userName'})}`}
               rules={[
                 {
@@ -48,10 +66,6 @@ class LoginPage extends Component{
                 },
               ]}
             />
-          </Tab>
-
-          <Tab key="mobile" tab={formatMessage({ id: 'BLOCK_NAME.login.tab-login-mobile' })}>
-
           </Tab>
           <div>
             <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
