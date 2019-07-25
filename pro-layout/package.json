@@ -1,0 +1,28 @@
+{
+  "name": "UserLayout",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "authors": {
+    "name": "kidkang",
+    "email": "723616880@qq.com"
+  },
+  "repository": "/UserLayout",
+  "scripts": {
+    "doc:dev": "umi-lib doc dev",
+    "dev": "umi-lib build --watch",
+    "build": "umi-lib build"
+  },
+  "peerDependencies": {
+    "react": "16.x"
+  },
+  "devDependencies": {
+    "umi-library": "^1.1.1"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "umi-plugin-block-dev": "^2.2.2",
+    "umi-plugin-react": "^1.9.13"
+  }
+}

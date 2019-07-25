@@ -14,7 +14,8 @@
   "dependencies": {
     "classnames": "^2.2.6",
     "react": ">=16.0.0",
-    "umi-plugin-react": "^1.9.12"
+    "umi-plugin-react": "^1.9.12",
+    "yjtec-request": "^1.0.0"
   },
   "devDependencies": {
     "@ant-design/pro-layout": "^4.5.11",
