@@ -1,5 +1,4 @@
 import styles from './index.css';
-import Rbac from './Rbac';
 export default function() {
   return (
     <div className={styles.normal}>
@@ -12,7 +11,6 @@ export default function() {
           <a href="https://umijs.org/guide/getting-started.html">Getting Started</a>
         </li>
       </ul>
-      <Rbac />
     </div>
   );
 }
