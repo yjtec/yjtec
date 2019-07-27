@@ -1,0 +1,25 @@
+{
+  "name": "ant-design-yjtec",
+  "version": "0.0.3",
+  "files": ["lib", "es"],
+  "description": "yjtec desiggn",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "authors": {
+    "name": "kidkang",
+    "email": "723616880@qq.com"
+  },
+  "repository": "/ant-design-yjtec",
+  "scripts": {
+    "dev": "umi-lib doc dev",
+    "build": "umi-lib build",
+    "watch": "umi-lib build --watch"
+  },
+  "peerDependencies": {
+    "react": "16.x"
+  },
+  "devDependencies": {
+    "umi-library": "^1.1.1"
+  },
+  "license": "MIT"
+}
