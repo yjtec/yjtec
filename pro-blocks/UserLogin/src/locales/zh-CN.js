@@ -1,7 +1,7 @@
 export default {
   'BLOCK_NAME.login.userName': '用户名',
   'BLOCK_NAME.login.password': '密码',
-  'BLOCK_NAME.login.message-invalid-credentials': '账户或密码错误（admin/ant.design）',
+  'BLOCK_NAME.login.message-invalid-credentials': '账户或密码错误',
   'BLOCK_NAME.login.message-invalid-verification-code': '验证码错误',
   'BLOCK_NAME.login.tab-login-credentials': '账户密码登录',
   'BLOCK_NAME.login.tab-login-mobile': '手机号登录',

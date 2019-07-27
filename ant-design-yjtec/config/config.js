@@ -1,5 +1,6 @@
 import pageRoutes from './router.config';
 import slash from 'slash2';
+import path from 'path';
 const plugins = [
   ['umi-plugin-react', {
     antd: true,

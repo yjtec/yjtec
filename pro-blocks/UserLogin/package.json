@@ -1,0 +1,25 @@
+{
+  "name": "@umi-block/UserLogin",
+  "version": "0.0.1",
+  "description": "yjtec UserLogin",
+  "main": "src/index.js",
+  "authors": {
+    "name": "kidkang",
+    "email": "723616880@qq.com"
+  },
+  "repository": "umijs/umi-blocks/UserLogin",
+  "scripts": {
+    "dev": "umi dev"
+  },
+  "dependencies": {
+    "omit.js": "^1.0.2",
+    "react": ">=16.0.0",
+    "yjtec-request": "^1.0.1"
+  },
+  "devDependencies": {
+    "umi": "^2.0.0",
+    "umi-plugin-block-dev": "^2.2.2",
+    "umi-plugin-react": "^1.9.13"
+  },
+  "license": "MIT"
+}

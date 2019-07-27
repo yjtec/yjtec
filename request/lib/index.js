@@ -49,26 +49,23 @@ request.interceptors.response.use(function () {
           case 2:
             data = _context.sent;
 
-            if (!(data.errcode != undefined && data.errcode != 0)) {
-              _context.next = 6;
-              break;
-            }
-
-            _antd.message.error(data.errmsg);
-            return _context.abrupt('return', false);
-
-          case 6:
+            // if (data.errcode != undefined && data.errcode != 0) {
+            //   message.error(data.errmsg);
+            // }
             if (options.method == 'DELETE' && data.errcode == 0) {
               //成功的提示
               _antd.message.success(data.errmsg);
             }
             if (options.alert != undefined) {
-              _antd.message.success(data.errmsg);
+              if (data.errcode != undefined && data.errcode != 0) {
+                _antd.message.error(data.errmsg);
+              } else {
+                _antd.message.success(data.errmsg);
+              }
             }
-
             return _context.abrupt('return', response);
 
-          case 9:
+          case 6:
           case 'end':
             return _context.stop();
         }

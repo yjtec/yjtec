@@ -33,17 +33,19 @@ const request = extend({
 });
 request.interceptors.response.use(async (response, options) => {
   const data = await response.clone().json();
-  if (data.errcode != undefined && data.errcode != 0) {
-    message.error(data.errmsg);
-    return false;
-  }
+  // if (data.errcode != undefined && data.errcode != 0) {
+  //   message.error(data.errmsg);
+  // }
   if (options.method == 'DELETE' && data.errcode == 0) { //成功的提示
     message.success(data.errmsg);
   }
   if (options.alert != undefined) {
-    message.success(data.errmsg);
+    if (data.errcode != undefined && data.errcode != 0) {
+      message.error(data.errmsg);
+    } else{
+      message.success(data.errmsg);
+    }
   }
-  
   return response;
 });
 export default request;
