@@ -1,13 +1,13 @@
 {
-  "name": "@umi-block/UserLogin",
+  "name": "@umi-block/Login",
   "version": "0.0.1",
-  "description": "yjtec UserLogin",
+  "description": "yjtec pro Login",
   "main": "src/index.js",
   "authors": {
     "name": "kidkang",
     "email": "723616880@qq.com"
   },
-  "repository": "umijs/umi-blocks/UserLogin",
+  "repository": "https://github.com/yjtec/yjtec/tree/master/pro-blocks/Login",
   "scripts": {
     "dev": "umi dev"
   },
