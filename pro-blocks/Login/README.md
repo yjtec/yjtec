@@ -5,7 +5,7 @@ yjtec UserLogin
 ## Usage
 
 ```sh
-umi block https://github.com/umijs/umi-blocks/tree/master/UserLogin
+umi block add https://github.com/yjtec/yjtec/tree/master/pro-blocks/Login
 ```
 
 ## LICENSE
