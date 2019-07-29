@@ -36,9 +36,25 @@ export default class BaseMenu extends PureComponent{
       .map(item => this.getSubMenuOrItem(item))
       .filter(item => item)
   }
+  getIntlName = (item) => {
+    const {name,locale} = item;
+    const { 
+      menu = {
+        locale: false,
+      }, 
+      formatMessage
+    } = this.props;
+    if(locale && menu.locale && formatMessage){
+      return formatMessage({
+        id:locale,
+        defaultMessage:name
+      })
+    }
+    return item.name;
+  }
   getSubMenuOrItem = item => {
     if(item.children && !item.hideChildrenInMenu && item.children.some(child => child.name)){
-      const {name} = item;
+      const name = this.getIntlName(item);
       return (
         <SubMenu
           title ={
@@ -104,7 +120,6 @@ export default class BaseMenu extends PureComponent{
       handleOpenChange
     } = this.props;
     let selectedKeys = this.getSelectedMenuKeys(location.pathname);
-    console.log(selectedKeys,openKeys);
     if (!selectedKeys.length && openKeys) {
       selectedKeys = [openKeys[openKeys.length - 1]];
     }

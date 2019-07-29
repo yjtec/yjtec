@@ -30,6 +30,7 @@ class BasicLayout extends Component{
           logo={logo}
           {...this.props}
           menuData={menuData}
+          rightContentRender = {(rightProps) => <div>right content</div>}
         >
           <PageHeaderWrapper>{children}</PageHeaderWrapper>
         </ProLayout>

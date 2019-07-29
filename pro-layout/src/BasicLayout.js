@@ -1,3 +1,4 @@
+import './BasicLayout.less';
 import React, { Suspense } from 'react';
 import { Layout } from 'antd';
 import DocumentTitle from 'react-document-title';
@@ -5,7 +6,7 @@ import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
 import defaultSettings from './defaultSettings';
 import getLocales from './locales';
-import Context from './RouteContext';
+import RouteContext from './RouteContext';
 import SiderMenu from './SiderMenu/';
 import Header from './Header';
 import defaultGetPageTitle from './getPageTitle';
@@ -87,14 +88,17 @@ class BasicLayout extends React.Component{
     } = this.props;
     const {routes,path} = route;
     const formatMessage = ({ id, defaultMessage, ...rest }) => {
+
       if (this.props.formatMessage) {
-          return props.formatMessage({
+
+          return this.props.formatMessage({
               id,
               defaultMessage,
               ...rest,
           });
       }
       const locales = getLocales();
+
       if (locales[id]) {
           return locales[id];
       }
@@ -112,47 +116,52 @@ class BasicLayout extends React.Component{
       formatMessage,
       breadcrumb,
     };
-    const breadcrumbProps = getBreadcrumbProps({
-      ...this.props,
-      breadcrumb,
-    });
     //gen page title
     const pageTitle = defaultPageTitleRender({
       pathname:location.pathname,
       ...defaultProps
     },this.props)
-
+  
+    const breadcrumbProps = getBreadcrumbProps({
+      ...this.props,
+      breadcrumb
+    })
     
     return(
       <React.Fragment>
         <DocumentTitle title={pageTitle}>
           <ContainerQuery query={query}>
             {params =>(
-              <Context.Provider value={this.getContext()}>
-                <div className={classNames(params ,'ant-design-pro','basicLayout')}>
-                  <Layout>
-                    {renderSiderMenu({
-                      ...defaultProps,
-                      menuData,
-                      theme:navTheme
-                    })}
+              <div className={classNames(params ,'ant-design-pro','basicLayout')}>
+                <Layout>
+                  {renderSiderMenu({
+                    ...defaultProps,
+                    menuData,
+                    theme:navTheme
+                  })}
 
-                    <Layout
-                      style={{
-                        minHeight:'100vh'
-                      }}
-                    >
-                      {headerRender({
-                        ...this.props
-                      })}
-                      <Content className="ant-pro-basicLayout-content">
+                  <Layout
+                    style={{
+                      minHeight:'100vh'
+                    }}
+                  >
+                    {headerRender({
+                      ...this.props
+                    })}
+                    <Content className="ant-pro-basicLayout-content" style={{paddingTop:0}}>
+                      <RouteContext.Provider value={{
+                        breadcrumb: breadcrumbProps,
+                        ...this.props,
+                        menuData,
+                        title:pageTitle.split('-')[0].trim(),
+                      }}>
                       {children}
-                      </Content>
-                      {footerRender({})}
-                    </Layout>
+                      </RouteContext.Provider>
+                    </Content>
+                    {footerRender({})}
                   </Layout>
-                </div>
-              </Context.Provider>
+                </Layout>
+              </div>
             )}
           </ContainerQuery>
         </DocumentTitle>

@@ -12,6 +12,7 @@ const getLanguage = () => {
 };
 export { getLanguage };
 export default (locale) => {
+
     if (locale) {
         return locales[locale];
     }

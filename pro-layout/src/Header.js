@@ -7,7 +7,7 @@ const { Header } = Layout;
 
 class HeaderView extends Component {
   renderContent = () => {
-    return <GlobalHeader />
+    return <GlobalHeader {...this.props} />
   }
   render(){
     return(
