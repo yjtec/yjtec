@@ -17,6 +17,8 @@ var _reactContainerQuery = require("react-container-query");
 
 var _classnames = _interopRequireDefault(require("classnames"));
 
+var _defaultSettings = _interopRequireDefault(require("./defaultSettings"));
+
 var _RouteContext = _interopRequireDefault(require("./RouteContext"));
 
 var _SiderMenu = _interopRequireDefault(require("./SiderMenu/"));
@@ -25,13 +27,21 @@ var _Header = _interopRequireDefault(require("./Header"));
 
 var _Footer = _interopRequireDefault(require("./Footer"));
 
+var _getBreadcrumbProps = require("./utils/getBreadcrumbProps");
+
 var _getMenuData2 = _interopRequireDefault(require("./utils/getMenuData"));
+
+var _utils = require("./utils/utils");
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -137,16 +147,61 @@ function (_React$Component) {
 
       var _this$props = this.props,
           children = _this$props.children,
-          route = _this$props.route,
-          propsMenuData = _this$props.menuData;
+          _this$props$location = _this$props.location,
+          location = _this$props$location === void 0 ? {
+        pathname: '/'
+      } : _this$props$location,
+          _this$props$siderWidt = _this$props.siderWidth,
+          siderWidth = _this$props$siderWidt === void 0 ? 256 : _this$props$siderWidt,
+          menu = _this$props.menu,
+          navTheme = _this$props.navTheme,
+          menuDataRender = _this$props.menuDataRender,
+          _this$props$route = _this$props.route,
+          route = _this$props$route === void 0 ? {
+        routes: []
+      } : _this$props$route;
       var routes = route.routes,
           path = route.path;
 
-      var _getMenuData = (0, _getMenuData2.default)(routes, path),
-          defaultMenuData = _getMenuData.menuData,
+      var formatMessage = function formatMessage(_ref) {
+        var id = _ref.id,
+            defaultMessage = _ref.defaultMessage,
+            rest = _objectWithoutProperties(_ref, ["id", "defaultMessage"]);
+
+        if (props.formatMessage) {
+          return props.formatMessage(_objectSpread({
+            id: id,
+            defaultMessage: defaultMessage
+          }, rest));
+        }
+
+        var locales = getLocales();
+
+        if (locales[id]) {
+          return locales[id];
+        }
+
+        if (defaultMessage) {
+          return defaultMessage;
+        }
+
+        return id;
+      };
+
+      var _getMenuData = (0, _getMenuData2.default)(routes, menu, formatMessage, menuDataRender),
+          menuData = _getMenuData.menuData,
           breadcrumb = _getMenuData.breadcrumb;
 
-      var menuData = propsMenuData || defaultMenuData;
+      console.log(menuData, breadcrumb);
+      var breadcrumbProps = (0, _getBreadcrumbProps.getBreadcrumbProps)(_objectSpread({}, this.props, {
+        breadcrumb: breadcrumb
+      }));
+
+      var defaultProps = _objectSpread({}, this.props, {
+        formatMessage: formatMessage,
+        breadcrumb: breadcrumb
+      });
+
       return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_reactDocumentTitle.default, {
         title: "adsf"
       }, _react.default.createElement(_reactContainerQuery.ContainerQuery, {
@@ -156,9 +211,10 @@ function (_React$Component) {
           value: _this2.getContext()
         }, _react.default.createElement("div", {
           className: (0, _classnames.default)(params, 'ant-design-pro', 'basicLayout')
-        }, _react.default.createElement(_layout.default, null, renderSiderMenu(_objectSpread({
-          menuData: menuData
-        }, _objectSpread({}, _this2.props))), _react.default.createElement(_layout.default, {
+        }, _react.default.createElement(_layout.default, null, renderSiderMenu(_objectSpread({}, defaultProps, {
+          menuData: menuData,
+          theme: navTheme
+        })), _react.default.createElement(_layout.default, {
           style: {
             minHeight: '100vh'
           }
@@ -172,5 +228,10 @@ function (_React$Component) {
   return BasicLayout;
 }(_react.default.Component);
 
+BasicLayout.defaultProps = _objectSpread({
+  logo: ''
+}, _defaultSettings.default, {
+  location: (0, _utils.isBrowser)() ? window.location : undefined
+});
 var _default = BasicLayout;
 exports.default = _default;

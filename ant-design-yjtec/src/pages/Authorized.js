@@ -1,4 +1,5 @@
 export default ({children,location})=>{
-  //console.log(location);
+  const auth = ['admin'];
+  const isLogin = auth && auth[0] !== 'guest';
   return <div>{children}</div>
 }

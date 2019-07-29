@@ -3,7 +3,9 @@ import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import { Menu, Icon } from 'antd';
 import Link from 'umi/link';
+import { getMenuMatches } from './SiderMenuUtils';
 import {isUrl} from '../utils/utils';
+import { urlToList } from '../utils/pathTools';
 const { SubMenu } = Menu;
 const getIcon = icon => {
   if (typeof icon === 'string') {
@@ -47,7 +49,7 @@ export default class BaseMenu extends PureComponent{
               </span>
             ) :(name)
           }
-          key={item.path}
+          key={item.key || item.path}
         >
           {this.getNavMenuItems(item.children)}
         </SubMenu>
@@ -56,7 +58,7 @@ export default class BaseMenu extends PureComponent{
 
     return <Menu.Item key={item.path}>{this.getMenuItemPath(item)}</Menu.Item>;
   }
-    getMenuItemPath = item => {
+  getMenuItemPath = item => {
     const { name } = item;
     const itemPath = this.conversionPath(item.path);
     const icon = getIcon(item.icon);
@@ -81,19 +83,58 @@ export default class BaseMenu extends PureComponent{
         <span>{name}</span>
       </Link>
     );
-  };
+  }
+
+  getSelectedMenuKeys = (pathname) => {
+    const {flatMenuKeys} = this.props;
+    return urlToList(pathname)
+                .map(itemPath => getMenuMatches(flatMenuKeys, itemPath).pop())
+                .filter(item => item);
+  }
 
   render(){
-    const {mode,style,menuData,theme} = this.props;
+    const {
+      openKeys,
+      mode,
+      style,
+      menuData,
+      className,
+      theme,
+      location={pathname:'/'},
+      handleOpenChange
+    } = this.props;
+    let selectedKeys = this.getSelectedMenuKeys(location.pathname);
+    console.log(selectedKeys,openKeys);
+    if (!selectedKeys.length && openKeys) {
+      selectedKeys = [openKeys[openKeys.length - 1]];
+    }
+    let props = {};
+    if(openKeys){
+      props = {
+        openKeys: openKeys.length === 0 ? [...selectedKeys] : openKeys,
+      };
+    }
+    const cls = classNames(className, {
+      'top-nav-menu': mode === 'horizontal',
+    });
     return(
       <Menu
         key="Menu"
         mode={mode}
         theme={theme}
         style={style}
+        className={cls}
+        selectedKeys={selectedKeys}
+        onOpenChange={handleOpenChange}
+        {...props}
       >
         {this.getNavMenuItems(menuData)}
       </Menu>
     )
   }
+}
+BaseMenu.defaultProps = {
+  flatMenuKeys:[],
+  openKeys:[],
+  handleOpenChange: () => {},
 }

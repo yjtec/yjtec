@@ -3,11 +3,16 @@ import { Layout } from 'antd';
 import DocumentTitle from 'react-document-title';
 import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
+import defaultSettings from './defaultSettings';
+import getLocales from './locales';
 import Context from './RouteContext';
 import SiderMenu from './SiderMenu/';
 import Header from './Header';
+import defaultGetPageTitle from './getPageTitle';
 import Footer from './Footer';
+import { getBreadcrumbProps } from './utils/getBreadcrumbProps';
 import getMenuData from './utils/getMenuData';
+import { isBrowser } from './utils/utils';
 const { Content } = Layout;
 const query = {
   'screen-xs': {
@@ -52,6 +57,16 @@ const footerRender = props => {
   }
   return <Footer />
 }
+const defaultPageTitleRender = (pageProps,props) =>{
+  const {pageTitleRender} = props;
+  if(pageTitleRender === false){
+    return props.title || '';
+  }
+  if(pageTitleRender){
+
+  }
+  return defaultGetPageTitle(pageProps);
+}
 class BasicLayout extends React.Component{
   getContext = () => {
     return{
@@ -61,23 +76,65 @@ class BasicLayout extends React.Component{
   render(){
     const {
       children,
-      route,
-      menuData:propsMenuData
+      location = {pathname:'/'},
+      siderWidth = 256, 
+      menu,
+      navTheme,
+      menuDataRender,
+      route = {
+        routes:[]
+      },
     } = this.props;
     const {routes,path} = route;
-    const {menuData:defaultMenuData,breadcrumb} = getMenuData(routes,path);
-    const menuData = propsMenuData || defaultMenuData;
+    const formatMessage = ({ id, defaultMessage, ...rest }) => {
+      if (this.props.formatMessage) {
+          return props.formatMessage({
+              id,
+              defaultMessage,
+              ...rest,
+          });
+      }
+      const locales = getLocales();
+      if (locales[id]) {
+          return locales[id];
+      }
+      if (defaultMessage) {
+          return defaultMessage;
+      }
+      return id;
+    };
+    
+
+    const {menuData,breadcrumb} = getMenuData(routes,menu,formatMessage,menuDataRender);
+
+    const defaultProps = {
+      ...this.props,
+      formatMessage,
+      breadcrumb,
+    };
+    const breadcrumbProps = getBreadcrumbProps({
+      ...this.props,
+      breadcrumb,
+    });
+    //gen page title
+    const pageTitle = defaultPageTitleRender({
+      pathname:location.pathname,
+      ...defaultProps
+    },this.props)
+
+    
     return(
       <React.Fragment>
-        <DocumentTitle title="adsf">
+        <DocumentTitle title={pageTitle}>
           <ContainerQuery query={query}>
             {params =>(
               <Context.Provider value={this.getContext()}>
                 <div className={classNames(params ,'ant-design-pro','basicLayout')}>
                   <Layout>
                     {renderSiderMenu({
+                      ...defaultProps,
                       menuData,
-                      ...{...this.props}
+                      theme:navTheme
                     })}
 
                     <Layout
@@ -102,5 +159,10 @@ class BasicLayout extends React.Component{
       </React.Fragment>
     )
   }
+}
+BasicLayout.defaultProps = {
+  logo:'',
+  ...defaultSettings,
+  location: isBrowser() ? window.location : undefined
 }
 export default BasicLayout;

@@ -3,6 +3,10 @@ import _Layout from "antd/es/layout";
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -29,11 +33,14 @@ import React, { Suspense } from 'react';
 import DocumentTitle from 'react-document-title';
 import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
+import defaultSettings from './defaultSettings';
 import Context from './RouteContext';
 import SiderMenu from './SiderMenu/';
 import Header from './Header';
 import Footer from './Footer';
+import { getBreadcrumbProps } from './utils/getBreadcrumbProps';
 import getMenuData from './utils/getMenuData';
+import { isBrowser } from './utils/utils';
 var Content = _Layout.Content;
 var query = {
   'screen-xs': {
@@ -116,16 +123,61 @@ function (_React$Component) {
 
       var _this$props = this.props,
           children = _this$props.children,
-          route = _this$props.route,
-          propsMenuData = _this$props.menuData;
+          _this$props$location = _this$props.location,
+          location = _this$props$location === void 0 ? {
+        pathname: '/'
+      } : _this$props$location,
+          _this$props$siderWidt = _this$props.siderWidth,
+          siderWidth = _this$props$siderWidt === void 0 ? 256 : _this$props$siderWidt,
+          menu = _this$props.menu,
+          navTheme = _this$props.navTheme,
+          menuDataRender = _this$props.menuDataRender,
+          _this$props$route = _this$props.route,
+          route = _this$props$route === void 0 ? {
+        routes: []
+      } : _this$props$route;
       var routes = route.routes,
           path = route.path;
 
-      var _getMenuData = getMenuData(routes, path),
-          defaultMenuData = _getMenuData.menuData,
+      var formatMessage = function formatMessage(_ref) {
+        var id = _ref.id,
+            defaultMessage = _ref.defaultMessage,
+            rest = _objectWithoutProperties(_ref, ["id", "defaultMessage"]);
+
+        if (props.formatMessage) {
+          return props.formatMessage(_objectSpread({
+            id: id,
+            defaultMessage: defaultMessage
+          }, rest));
+        }
+
+        var locales = getLocales();
+
+        if (locales[id]) {
+          return locales[id];
+        }
+
+        if (defaultMessage) {
+          return defaultMessage;
+        }
+
+        return id;
+      };
+
+      var _getMenuData = getMenuData(routes, menu, formatMessage, menuDataRender),
+          menuData = _getMenuData.menuData,
           breadcrumb = _getMenuData.breadcrumb;
 
-      var menuData = propsMenuData || defaultMenuData;
+      console.log(menuData, breadcrumb);
+      var breadcrumbProps = getBreadcrumbProps(_objectSpread({}, this.props, {
+        breadcrumb: breadcrumb
+      }));
+
+      var defaultProps = _objectSpread({}, this.props, {
+        formatMessage: formatMessage,
+        breadcrumb: breadcrumb
+      });
+
       return React.createElement(React.Fragment, null, React.createElement(DocumentTitle, {
         title: "adsf"
       }, React.createElement(ContainerQuery, {
@@ -135,9 +187,10 @@ function (_React$Component) {
           value: _this2.getContext()
         }, React.createElement("div", {
           className: classNames(params, 'ant-design-pro', 'basicLayout')
-        }, React.createElement(_Layout, null, renderSiderMenu(_objectSpread({
-          menuData: menuData
-        }, _objectSpread({}, _this2.props))), React.createElement(_Layout, {
+        }, React.createElement(_Layout, null, renderSiderMenu(_objectSpread({}, defaultProps, {
+          menuData: menuData,
+          theme: navTheme
+        })), React.createElement(_Layout, {
           style: {
             minHeight: '100vh'
           }
@@ -151,4 +204,9 @@ function (_React$Component) {
   return BasicLayout;
 }(React.Component);
 
+BasicLayout.defaultProps = _objectSpread({
+  logo: ''
+}, defaultSettings, {
+  location: isBrowser() ? window.location : undefined
+});
 export default BasicLayout;

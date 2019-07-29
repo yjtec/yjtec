@@ -1,0 +1,16 @@
+{
+  "name": "umi-plugin-yjtec-block",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "umi-tools build",
+    "watch": "umi-tools build --watch"
+  },
+  "author": "kidkang",
+  "license": "ISC",
+  "devDependencies": {
+    "umi-tools": "^0.4.0"
+  }
+}

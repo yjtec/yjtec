@@ -80,6 +80,7 @@ function (_Component) {
           siderWidth = _this$props$siderWidt === void 0 ? 256 : _this$props$siderWidt,
           title = _this$props.title,
           logo = _this$props.logo;
+      var openKeys = this.state.openKeys;
       var siderClassName = (0, _classnames.default)('ant-pro-sider-menu-sider', {
         light: theme === 'light'
       });
@@ -103,4 +104,21 @@ function (_Component) {
   return SiderMenu;
 }(_react.Component);
 
-exports.default = SiderMenu;
+SiderMenu.defaultProps = {
+  flatMenuKeys: [],
+  onCollapse: function onCollapse() {
+    return undefined;
+  },
+  isMobile: false,
+  openKeys: [],
+  collapsed: false,
+  handleOpenChange: function handleOpenChange() {
+    return undefined;
+  },
+  menuData: [],
+  onOpenChange: function onOpenChange() {
+    return undefined;
+  }
+};
+var _default = SiderMenu;
+exports.default = _default;

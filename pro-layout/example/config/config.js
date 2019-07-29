@@ -1,5 +1,5 @@
-const path = require('path');
 import slash from 'slash2';
+const path = require('path');
 const plugins = [
   [
     'umi-plugin-react',
@@ -21,6 +21,7 @@ export default {
       path:'/',
       component:'../layouts/BasicLayout',
       routes:[
+        {path:'/',redirect:'/welcome/one'},
         {
           path:'/welcome',
           name:'welcome',
@@ -35,7 +36,7 @@ export default {
             },
             {
               path:'/welcome/two',
-              name:'one',
+              name:'two',
               icon:'smile',
               component:'./Welcome'
             }
@@ -48,13 +49,13 @@ export default {
           component:'./Welcome',
           routes:[
             {
-              path:'/welcome/one1',
+              path:'/welcome1/one1',
               name:'one',
               icon:'smile',
               component:'./Welcome'
             },
             {
-              path:'/welcome/two1',
+              path:'/welcome1/two1',
               name:'one',
               icon:'smile',
               component:'./Welcome'

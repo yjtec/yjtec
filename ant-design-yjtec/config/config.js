@@ -7,16 +7,15 @@ const plugins = [
     dva: {
       hmr: true
     },
-    local: {
+    locale: {
       enable: true,
-      default: 'zh-CN',
-      baseNavigator: true
+      default: 'zh-CN'
     }
   }],
-  ['umi-plugin-pro-block', {
+  ['umi-plugin-yjtec-block', {
     moveMock: true,
     moveService: true,
-    modifyRequest: true,
+    modifyRequest: false,
     autoAddMenu: true,
   }, ]
 ];

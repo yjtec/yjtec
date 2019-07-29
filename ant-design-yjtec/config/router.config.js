@@ -3,7 +3,15 @@ export default [
     path: '/user',
     component: '../layouts/UserLayout',
     routes: [
-      
+      {
+        path: '/user/login',
+        component: './user/Login',
+      },
+      {
+        name: 'user',
+        path: '/user',
+        component: './user',
+      },
     ],
   }, // app
   {

@@ -4,15 +4,15 @@ import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import Link from 'umi/link';
 import { Checkbox, Alert, Icon } from 'antd';
 import styles from './index.less';
-import Login from 'ant-design-yjtec/lib/Login';
+import Login from '@/components/Login';
 const {Tab,UserName,Password,Mobile,Submit,Captcha} = Login;
-@connect(({ BLOCK_NAME_CAMEL_CASE, loading })=>({
-  BLOCK_NAME_CAMEL_CASE,
-  submitting:loading.effects['BLOCK_NAME_CAMEL_CASE/login']
+@connect(({ user, loading })=>({
+  user,
+  submitting:loading.effects['user/login']
 }))
 class LoginPage extends Component{
   state={
-    type:'account',
+    type:'mobile',
     autoLogin:true
   }
   changeAutoLogin = e => {
@@ -28,7 +28,7 @@ class LoginPage extends Component{
     if (!err) {
       const { dispatch } = this.props;
       dispatch({
-        type: 'BLOCK_NAME_CAMEL_CASE/login',
+        type: 'user/login',
         payload: {
           ...values,
           type,
@@ -44,7 +44,7 @@ class LoginPage extends Component{
         }else{
           const {dispatch} = this.props;
           dispatch({
-            type: 'BLOCK_NAME_CAMEL_CASE/getCaptcha',
+            type: 'user/getCaptcha',
             payload: values.mobile,
           })
           .then(resolve)
@@ -57,8 +57,8 @@ class LoginPage extends Component{
     <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />
   )
   render(){
-    const {BLOCK_NAME_CAMEL_CASE,submitting} = this.props;
-    const {status,type:loginType} = BLOCK_NAME_CAMEL_CASE;
+    const {user,submitting} = this.props;
+    const {status,type:loginType} = user;
     const {type,autoLogin} = this.state;
     return (
       <div className={styles.main}>
@@ -68,81 +68,81 @@ class LoginPage extends Component{
           onSubmit={this.handleSubmit}
           ref={form => {this.loginForm = form}}
         >
-          <Tab key="account" tab={formatMessage({id:'BLOCK_NAME.login.tab-login-credentials'})}>
+          <Tab key="account" tab={formatMessage({id:'user.login.tab-login-credentials'})}>
             {status == 'error' &&
               loginType == 'account' &&
               !submitting &&
-               this.renderMessage(formatMessage({ id: 'BLOCK_NAME.login.message-invalid-credentials' }))
+               this.renderMessage(formatMessage({ id: 'user.login.message-invalid-credentials' }))
             }
             <UserName
               name="account"
-              placeholder={`${formatMessage({ id: 'BLOCK_NAME.login.userName' })}`}
+              placeholder={`${formatMessage({ id: 'user.login.userName' })}`}
               rules={[
                 {
                   required: true,
-                  message: formatMessage({ id: 'BLOCK_NAME.userName.required' }),
+                  message: formatMessage({ id: 'user.userName.required' }),
                 },
               ]}
             />
             <Password
                 name="password"
-                placeholder={`${formatMessage({ id: 'BLOCK_NAME.login.password' })}`}
+                placeholder={`${formatMessage({ id: 'user.login.password' })}`}
                 rules={[
                   {
                     required: true,
-                    message: formatMessage({ id: 'BLOCK_NAME.password.required' }),
+                    message: formatMessage({ id: 'user.password.required' }),
                   },
                 ]}
               />
           </Tab>
-          <Tab key="mobile" tab={formatMessage({ id: 'BLOCK_NAME.login.tab-login-mobile' })}>
+          <Tab key="mobile" tab={formatMessage({ id: 'user.login.tab-login-mobile' })}>
             <Mobile
               name="mobile"
-              placeholder={formatMessage({ id: 'BLOCK_NAME.phone-number.placeholder' })}
+              placeholder={formatMessage({ id: 'user.phone-number.placeholder' })}
               rules={[
                 {
                   required: true,
-                  message: formatMessage({ id: 'BLOCK_NAME.phone-number.required' }),
+                  message: formatMessage({ id: 'user.phone-number.required' }),
                 },
                 {
                   pattern: /^1\d{10}$/,
-                  message: formatMessage({ id: 'BLOCK_NAME.phone-number.wrong-format' }),
+                  message: formatMessage({ id: 'user.phone-number.wrong-format' }),
                 },
               ]}
             />
             <Captcha
               name="captcha"
-              placeholder={formatMessage({ id: 'BLOCK_NAME.verification-code.placeholder' })}
+              placeholder={formatMessage({ id: 'user.verification-code.placeholder' })}
               countDown={5}
               onGetCaptcha={this.onGetCaptcha}
-              getCaptchaButtonText={formatMessage({ id: 'BLOCK_NAME.form.get-captcha' })}
-              getCaptchaSecondText={formatMessage({ id: 'BLOCK_NAME.captcha.second' })}
+              getCaptchaButtonText={formatMessage({ id: 'user.form.get-captcha' })}
+              getCaptchaSecondText={formatMessage({ id: 'user.captcha.second' })}
               rules={[
                 {
                   required: true,
-                  message: formatMessage({ id: 'BLOCK_NAME.verification-code.required' }),
+                  message: formatMessage({ id: 'user.verification-code.required' }),
                 },
               ]}
             />
           </Tab>
           <div>
             <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
-              <FormattedMessage id="BLOCK_NAME.login.remember-me" />
+              <FormattedMessage id="user.login.remember-me" />
             </Checkbox>
             {/*<a style={{ float: 'right' }} href="">
-              <FormattedMessage id="BLOCK_NAME.login.forgot-password" />
+              <FormattedMessage id="user.login.forgot-password" />
             </a>*/}
           </div>
           <Submit loading={submitting}>
-            <FormattedMessage id="BLOCK_NAME.login.login" />
+            <FormattedMessage id="user.login.login" />
           </Submit>
           <div className={styles.other}>
-            <FormattedMessage id="BLOCK_NAME.login.sign-in-with" />
+            <FormattedMessage id="user.login.sign-in-with" />
             <Icon type="alipay-circle" className={styles.icon} theme="outlined" />
             <Icon type="taobao-circle" className={styles.icon} theme="outlined" />
             <Icon type="weibo-circle" className={styles.icon} theme="outlined" />
             <Link className={styles.register} to="/user/register">
-              <FormattedMessage id="BLOCK_NAME.login.signup" />
+              <FormattedMessage id="user.login.signup" />
             </Link>
           </div>
         </Login>
