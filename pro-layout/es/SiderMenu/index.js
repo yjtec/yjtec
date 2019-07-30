@@ -20,6 +20,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 import React from 'react';
 import SiderMenu from './SiderMenu';
+import { getFlatMenuKeys } from './SiderMenuUtils';
 
 var SiderMenuWrapper =
 /*#__PURE__*/
@@ -35,9 +36,13 @@ function (_React$Component) {
   _createClass(SiderMenuWrapper, [{
     key: "render",
     value: function render() {
+      var menuData = this.props.menuData;
+      var flatMenuKeys = getFlatMenuKeys(menuData);
       return React.createElement(SiderMenu, _extends({
         className: "ant-pro-sider-menu"
-      }, this.props));
+      }, this.props, {
+        flatMenuKeys: flatMenuKeys
+      }));
     }
   }]);
 

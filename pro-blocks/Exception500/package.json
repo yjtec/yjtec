@@ -1,0 +1,23 @@
+{
+  "name": "@umi-block/Exception500",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.js",
+  "authors": {
+    "name": "kidkang",
+    "email": "723616880@qq.com"
+  },
+  "repository": "umijs/umi-blocks/Exception500",
+  "scripts": {
+    "dev": "umi dev"
+  },
+  "dependencies": {
+    "react": ">=16.0.0"
+  },
+  "devDependencies": {
+    "umi": "^2.0.0",
+    "umi-plugin-block-dev": "^2.0.0",
+    "umi-plugin-react": "^1.9.14"
+  },
+  "license": "MIT"
+}

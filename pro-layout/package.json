@@ -1,6 +1,6 @@
 {
   "name": "@yjtec/pro-layout",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "lib/index.js",
   "module": "dist/index.esm.js",
@@ -16,7 +16,8 @@
   "scripts": {
     "doc:dev": "umi-lib doc dev",
     "dev": "umi-lib build --watch",
-    "build": "umi-lib build"
+    "build": "umi-lib build",
+    "pub":"umi-lib build && npm publish --access public"
   },
   "peerDependencies": {
     "react": "16.x"

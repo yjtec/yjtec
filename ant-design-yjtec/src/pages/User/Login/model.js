@@ -1,6 +1,6 @@
-import { fetchLogin, getCaptcha } from '@/services/user';
+import { fetchLogin, getCaptcha } from '@/services/Login';
 export default {
-  namespace: 'user',
+  namespace: 'login',
 
   state: {
     status: undefined,
@@ -8,9 +8,6 @@ export default {
   effects:{
     *login({payload},{call,put}){
       const re = yield call(fetchLogin,payload);
-      // if(re.errcode == 0){
-      //   yield put(route)
-      // }
       yield put({
         type:'saveLogin',
         payload:re
@@ -18,8 +15,6 @@ export default {
     },
     *getCaptcha({payload},{call,put}){
       yield call(getCaptcha,payload);
-      
-      //yield put(routerRedux.replace('/'));
     }
   },
   reducers:{

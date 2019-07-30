@@ -29,14 +29,17 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+import './BasicLayout.less';
 import React, { Suspense } from 'react';
 import DocumentTitle from 'react-document-title';
 import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
 import defaultSettings from './defaultSettings';
-import Context from './RouteContext';
+import getLocales from './locales';
+import RouteContext from './RouteContext';
 import SiderMenu from './SiderMenu/';
 import Header from './Header';
+import defaultGetPageTitle from './getPageTitle';
 import Footer from './Footer';
 import { getBreadcrumbProps } from './utils/getBreadcrumbProps';
 import getMenuData from './utils/getMenuData';
@@ -89,6 +92,18 @@ var footerRender = function footerRender(props) {
   }
 
   return React.createElement(Footer, null);
+};
+
+var defaultPageTitleRender = function defaultPageTitleRender(pageProps, props) {
+  var pageTitleRender = props.pageTitleRender;
+
+  if (pageTitleRender === false) {
+    return props.title || '';
+  }
+
+  if (pageTitleRender) {}
+
+  return defaultGetPageTitle(pageProps);
 };
 
 var BasicLayout =
@@ -144,8 +159,8 @@ function (_React$Component) {
             defaultMessage = _ref.defaultMessage,
             rest = _objectWithoutProperties(_ref, ["id", "defaultMessage"]);
 
-        if (props.formatMessage) {
-          return props.formatMessage(_objectSpread({
+        if (_this2.props.formatMessage) {
+          return _this2.props.formatMessage(_objectSpread({
             id: id,
             defaultMessage: defaultMessage
           }, rest));
@@ -168,24 +183,24 @@ function (_React$Component) {
           menuData = _getMenuData.menuData,
           breadcrumb = _getMenuData.breadcrumb;
 
-      console.log(menuData, breadcrumb);
-      var breadcrumbProps = getBreadcrumbProps(_objectSpread({}, this.props, {
-        breadcrumb: breadcrumb
-      }));
-
       var defaultProps = _objectSpread({}, this.props, {
         formatMessage: formatMessage,
         breadcrumb: breadcrumb
-      });
+      }); //gen page title
 
+
+      var pageTitle = defaultPageTitleRender(_objectSpread({
+        pathname: location.pathname
+      }, defaultProps), this.props);
+      var breadcrumbProps = getBreadcrumbProps(_objectSpread({}, this.props, {
+        breadcrumb: breadcrumb
+      }));
       return React.createElement(React.Fragment, null, React.createElement(DocumentTitle, {
-        title: "adsf"
+        title: pageTitle
       }, React.createElement(ContainerQuery, {
         query: query
       }, function (params) {
-        return React.createElement(Context.Provider, {
-          value: _this2.getContext()
-        }, React.createElement("div", {
+        return React.createElement("div", {
           className: classNames(params, 'ant-design-pro', 'basicLayout')
         }, React.createElement(_Layout, null, renderSiderMenu(_objectSpread({}, defaultProps, {
           menuData: menuData,
@@ -195,8 +210,18 @@ function (_React$Component) {
             minHeight: '100vh'
           }
         }, headerRender(_objectSpread({}, _this2.props)), React.createElement(Content, {
-          className: "ant-pro-basicLayout-content"
-        }, children), footerRender({})))));
+          className: "ant-pro-basicLayout-content",
+          style: {
+            paddingTop: 0
+          }
+        }, React.createElement(RouteContext.Provider, {
+          value: _objectSpread({
+            breadcrumb: breadcrumbProps
+          }, _this2.props, {
+            menuData: menuData,
+            title: pageTitle.split('-')[0].trim()
+          })
+        }, children)), footerRender({}))));
       })));
     }
   }]);

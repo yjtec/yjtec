@@ -4,13 +4,9 @@ export default [
     component: '../layouts/UserLayout',
     routes: [
       {
+        name: 'login',
         path: '/user/login',
-        component: './user/Login',
-      },
-      {
-        name: 'user',
-        path: '/user',
-        component: './user',
+        component: './User/Login',
       },
     ],
   }, // app
@@ -18,25 +14,28 @@ export default [
     path: '/',
     component: '../layouts/BasicLayout',
     Routes: ['src/pages/Authorized'],
+    authority: ['admin', 'user'],
     routes: [
-      // dashboard
       {
         path: '/',
         redirect: '/welcome/one',
-        authority: ['admin', 'user'],
       },
       {
         path: '/welcome',
         name: 'welcome',
         icon: 'smail',
-        routes: [
-          {
-            path: '/welcome/one',
-            name: 'analysis',
-            icon: 'smail',
-            component: './Welcome',
-          },
-        ],
+        authority: ['admin', 'user', 'bbb'], // routes: [
+        //   {
+        //     path: '/welcome/one',
+        //     name: 'analysis',
+        //     icon: 'smail',
+        //     component: './Welcome',
+        //   },
+        // ],
+      },
+      {
+        path: '/b',
+        component: './b',
       },
     ],
   },

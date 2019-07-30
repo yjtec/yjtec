@@ -9,6 +9,8 @@ require("antd/es/layout/style");
 
 var _layout = _interopRequireDefault(require("antd/es/layout"));
 
+require("./BasicLayout.less");
+
 var _react = _interopRequireWildcard(require("react"));
 
 var _reactDocumentTitle = _interopRequireDefault(require("react-document-title"));
@@ -19,11 +21,15 @@ var _classnames = _interopRequireDefault(require("classnames"));
 
 var _defaultSettings = _interopRequireDefault(require("./defaultSettings"));
 
+var _locales = _interopRequireDefault(require("./locales"));
+
 var _RouteContext = _interopRequireDefault(require("./RouteContext"));
 
 var _SiderMenu = _interopRequireDefault(require("./SiderMenu/"));
 
 var _Header = _interopRequireDefault(require("./Header"));
+
+var _getPageTitle = _interopRequireDefault(require("./getPageTitle"));
 
 var _Footer = _interopRequireDefault(require("./Footer"));
 
@@ -115,6 +121,18 @@ var footerRender = function footerRender(props) {
   return _react.default.createElement(_Footer.default, null);
 };
 
+var defaultPageTitleRender = function defaultPageTitleRender(pageProps, props) {
+  var pageTitleRender = props.pageTitleRender;
+
+  if (pageTitleRender === false) {
+    return props.title || '';
+  }
+
+  if (pageTitleRender) {}
+
+  return (0, _getPageTitle.default)(pageProps);
+};
+
 var BasicLayout =
 /*#__PURE__*/
 function (_React$Component) {
@@ -168,14 +186,14 @@ function (_React$Component) {
             defaultMessage = _ref.defaultMessage,
             rest = _objectWithoutProperties(_ref, ["id", "defaultMessage"]);
 
-        if (props.formatMessage) {
-          return props.formatMessage(_objectSpread({
+        if (_this2.props.formatMessage) {
+          return _this2.props.formatMessage(_objectSpread({
             id: id,
             defaultMessage: defaultMessage
           }, rest));
         }
 
-        var locales = getLocales();
+        var locales = (0, _locales.default)();
 
         if (locales[id]) {
           return locales[id];
@@ -192,24 +210,24 @@ function (_React$Component) {
           menuData = _getMenuData.menuData,
           breadcrumb = _getMenuData.breadcrumb;
 
-      console.log(menuData, breadcrumb);
-      var breadcrumbProps = (0, _getBreadcrumbProps.getBreadcrumbProps)(_objectSpread({}, this.props, {
-        breadcrumb: breadcrumb
-      }));
-
       var defaultProps = _objectSpread({}, this.props, {
         formatMessage: formatMessage,
         breadcrumb: breadcrumb
-      });
+      }); //gen page title
 
+
+      var pageTitle = defaultPageTitleRender(_objectSpread({
+        pathname: location.pathname
+      }, defaultProps), this.props);
+      var breadcrumbProps = (0, _getBreadcrumbProps.getBreadcrumbProps)(_objectSpread({}, this.props, {
+        breadcrumb: breadcrumb
+      }));
       return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_reactDocumentTitle.default, {
-        title: "adsf"
+        title: pageTitle
       }, _react.default.createElement(_reactContainerQuery.ContainerQuery, {
         query: query
       }, function (params) {
-        return _react.default.createElement(_RouteContext.default.Provider, {
-          value: _this2.getContext()
-        }, _react.default.createElement("div", {
+        return _react.default.createElement("div", {
           className: (0, _classnames.default)(params, 'ant-design-pro', 'basicLayout')
         }, _react.default.createElement(_layout.default, null, renderSiderMenu(_objectSpread({}, defaultProps, {
           menuData: menuData,
@@ -219,8 +237,18 @@ function (_React$Component) {
             minHeight: '100vh'
           }
         }, headerRender(_objectSpread({}, _this2.props)), _react.default.createElement(Content, {
-          className: "ant-pro-basicLayout-content"
-        }, children), footerRender({})))));
+          className: "ant-pro-basicLayout-content",
+          style: {
+            paddingTop: 0
+          }
+        }, _react.default.createElement(_RouteContext.default.Provider, {
+          value: _objectSpread({
+            breadcrumb: breadcrumbProps
+          }, _this2.props, {
+            menuData: menuData,
+            title: pageTitle.split('-')[0].trim()
+          })
+        }, children)), footerRender({}))));
       })));
     }
   }]);

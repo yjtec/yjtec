@@ -43,9 +43,14 @@ function (_Component) {
   _createClass(GlobalHeader, [{
     key: "render",
     value: function render() {
+      console.log(this.props);
+      var _this$props = this.props,
+          isMobile = _this$props.isMobile,
+          logo = _this$props.logo,
+          rightContentRender = _this$props.rightContentRender;
       return _react.default.createElement("div", {
         className: "ant-pro-global-header"
-      }, "header");
+      }, rightContentRender && rightContentRender(this.props));
     }
   }]);
 

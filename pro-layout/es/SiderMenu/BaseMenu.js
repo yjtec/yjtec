@@ -5,6 +5,16 @@ import _Menu from "antd/es/menu";
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -25,7 +35,9 @@ import './index.less';
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import Link from 'umi/link';
+import { getMenuMatches } from './SiderMenuUtils';
 import { isUrl } from '../utils/utils';
+import { urlToList } from '../utils/pathTools';
 var SubMenu = _Menu.SubMenu;
 
 var getIcon = function getIcon(icon) {
@@ -96,14 +108,35 @@ function (_PureComponent) {
       });
     };
 
+    _this.getIntlName = function (item) {
+      var name = item.name,
+          locale = item.locale;
+      var _this$props = _this.props,
+          _this$props$menu = _this$props.menu,
+          menu = _this$props$menu === void 0 ? {
+        locale: false
+      } : _this$props$menu,
+          formatMessage = _this$props.formatMessage;
+
+      if (locale && menu.locale && formatMessage) {
+        return formatMessage({
+          id: locale,
+          defaultMessage: name
+        });
+      }
+
+      return item.name;
+    };
+
     _this.getSubMenuOrItem = function (item) {
       if (item.children && !item.hideChildrenInMenu && item.children.some(function (child) {
         return child.name;
       })) {
-        var name = item.name;
+        var name = _this.getIntlName(item);
+
         return React.createElement(SubMenu, {
           title: item.icon ? React.createElement("span", null, getIcon(item.icon), React.createElement("span", null, name)) : name,
-          key: item.path
+          key: item.key || item.path
         }, _this.getNavMenuItems(item.children));
       }
 
@@ -135,23 +168,59 @@ function (_PureComponent) {
       }, icon, React.createElement("span", null, name));
     };
 
+    _this.getSelectedMenuKeys = function (pathname) {
+      var flatMenuKeys = _this.props.flatMenuKeys;
+      return urlToList(pathname).map(function (itemPath) {
+        return getMenuMatches(flatMenuKeys, itemPath).pop();
+      }).filter(function (item) {
+        return item;
+      });
+    };
+
     return _this;
   }
 
   _createClass(BaseMenu, [{
     key: "render",
     value: function render() {
-      var _this$props = this.props,
-          mode = _this$props.mode,
-          style = _this$props.style,
-          menuData = _this$props.menuData,
-          theme = _this$props.theme;
-      return React.createElement(_Menu, {
+      var _this$props2 = this.props,
+          openKeys = _this$props2.openKeys,
+          mode = _this$props2.mode,
+          style = _this$props2.style,
+          menuData = _this$props2.menuData,
+          className = _this$props2.className,
+          theme = _this$props2.theme,
+          _this$props2$location = _this$props2.location,
+          location = _this$props2$location === void 0 ? {
+        pathname: '/'
+      } : _this$props2$location,
+          handleOpenChange = _this$props2.handleOpenChange;
+      var selectedKeys = this.getSelectedMenuKeys(location.pathname);
+
+      if (!selectedKeys.length && openKeys) {
+        selectedKeys = [openKeys[openKeys.length - 1]];
+      }
+
+      var props = {};
+
+      if (openKeys) {
+        props = {
+          openKeys: openKeys.length === 0 ? _toConsumableArray(selectedKeys) : openKeys
+        };
+      }
+
+      var cls = classNames(className, {
+        'top-nav-menu': mode === 'horizontal'
+      });
+      return React.createElement(_Menu, _extends({
         key: "Menu",
         mode: mode,
         theme: theme,
-        style: style
-      }, this.getNavMenuItems(menuData));
+        style: style,
+        className: cls,
+        selectedKeys: selectedKeys,
+        onOpenChange: handleOpenChange
+      }, props), this.getNavMenuItems(menuData));
     }
   }]);
 
@@ -159,3 +228,8 @@ function (_PureComponent) {
 }(PureComponent);
 
 export { BaseMenu as default };
+BaseMenu.defaultProps = {
+  flatMenuKeys: [],
+  openKeys: [],
+  handleOpenChange: function handleOpenChange() {}
+};

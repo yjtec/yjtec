@@ -11,13 +11,7 @@ const plugins = [
       enable: true,
       default: 'zh-CN'
     }
-  }],
-  ['umi-plugin-yjtec-block', {
-    moveMock: true,
-    moveService: true,
-    modifyRequest: false,
-    autoAddMenu: true,
-  }, ]
+  }]
 ];
 export default {
   plugins,

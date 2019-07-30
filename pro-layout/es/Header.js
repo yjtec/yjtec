@@ -43,7 +43,7 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(HeaderView)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _this.renderContent = function () {
-      return React.createElement(GlobalHeader, null);
+      return React.createElement(GlobalHeader, _this.props);
     };
 
     return _this;

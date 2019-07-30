@@ -5,6 +5,14 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -25,6 +33,7 @@ import './index.less';
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import BaseMenu from './BaseMenu';
+import { getDefaultCollapsedSubMenus } from './SiderMenuUtils';
 var Sider = _Layout.Sider;
 export var defaultRenderLogo = function defaultRenderLogo(logo) {
   if (typeof logo === 'string') {
@@ -47,9 +56,52 @@ function (_Component) {
   _inherits(SiderMenu, _Component);
 
   function SiderMenu() {
+    var _getPrototypeOf2;
+
+    var _this;
+
     _classCallCheck(this, SiderMenu);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(SiderMenu).apply(this, arguments));
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(SiderMenu)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this.state = {
+      openKeys: getDefaultCollapsedSubMenus(_this.props)
+    };
+
+    _this.isMainMenu = function (key) {
+      var _this$props$menuData = _this.props.menuData,
+          menuData = _this$props$menuData === void 0 ? [] : _this$props$menuData;
+      return menuData.some(function (item) {
+        if (key) {
+          return item.key === key || item.path === key;
+        }
+
+        return false;
+      });
+    };
+
+    _this.handleOpenChange = function (openKeys) {
+      var moreThanOne = openKeys.filter(function (openKey) {
+        return _this.isMainMenu(openKey);
+      }).length > 1;
+
+      if (moreThanOne) {
+        _this.setState({
+          openKeys: [openKeys.pop()].filter(function (item) {
+            return item;
+          })
+        });
+      } else {
+        _this.setState({
+          openKeys: _toConsumableArray(openKeys)
+        });
+      }
+    };
+
+    return _this;
   }
 
   _createClass(SiderMenu, [{
@@ -65,20 +117,24 @@ function (_Component) {
       var siderClassName = classNames('ant-pro-sider-menu-sider', {
         light: theme === 'light'
       });
+      var defaultProps = {
+        openKeys: openKeys
+      };
       return React.createElement(Sider, {
         width: siderWidth,
         className: siderClassName
       }, React.createElement("div", {
         className: "ant-pro-sider-menu-logo",
         id: "logo"
-      }, React.createElement("a", null, defaultRenderLogo(logo), React.createElement("h1", null, title, "\u666F\u5728\u7EBF\u7CFB\u7EDF"))), React.createElement(BaseMenu, _extends({}, this.props, {
+      }, React.createElement("a", null, defaultRenderLogo(logo), React.createElement("h1", null, title))), React.createElement(BaseMenu, _extends({}, this.props, {
         mode: "inline",
         theme: "dark",
+        handleOpenChange: this.handleOpenChange,
         style: {
           padding: '16px 0',
           width: '100%'
         }
-      })));
+      }, defaultProps)));
     }
   }]);
 
