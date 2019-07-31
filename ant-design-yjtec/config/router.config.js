@@ -29,17 +29,25 @@ export default [
         name: 'rbac',
         path: '/rbac',
         component: './Rbac',
-        routes:[
-          {name:'role',path:'/rbac/role','component':'./Rbac/Role'}
-        ]
-      },      
+        routes: [
+          {
+            name: 'role',
+            path: '/rbac/role',
+            component: './Rbac/Role',
+          },
+          {
+            name: 'rbac',
+            path: '/rbac',
+            component: './Rbac',
+          },
+        ],
+      },
       {
         name: 'exception/403',
         path: '/exception/403',
         hideInMenu: true,
         component: './Exception/403',
       },
-      
     ],
   },
 ];
