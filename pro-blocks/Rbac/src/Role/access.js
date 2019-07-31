@@ -22,7 +22,7 @@ const format = data => {
   role:role.access,
   loading:loading.effects['access/fetch']
 }))
-export default class RoleAccess extends Component{
+class RoleAccess extends Component{
   constructor(props) {
     super(props);
     this.state={
@@ -105,3 +105,4 @@ export default class RoleAccess extends Component{
     )
   }
 }
+export default RoleAccess;

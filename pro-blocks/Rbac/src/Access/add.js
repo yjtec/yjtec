@@ -14,7 +14,7 @@ const dataItem = {
   loading:loading.effects['access/fetchSave']
 }))
 @Form.create({name:'access_add_form'})
-export default class AccessAdd extends Component{
+class AccessAdd extends Component{
   state = {
     visible:true
   }
@@ -88,3 +88,4 @@ export default class AccessAdd extends Component{
     )
   }
 }
+export default AccessAdd;

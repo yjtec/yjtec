@@ -9,7 +9,7 @@ const {TextArea} = Input;
 }))
 @Form.create({name:'role_form'})
 
-export default class RoleAdd extends Component {
+class RoleAdd extends Component {
   
   handleOk = () => {
     const {
@@ -86,3 +86,4 @@ export default class RoleAdd extends Component {
   }
   
 }
+export default RoleAdd;

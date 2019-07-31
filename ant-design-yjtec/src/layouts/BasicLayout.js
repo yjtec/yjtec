@@ -3,6 +3,17 @@ import styles from './BasicLayout.less';
 import React, { Component } from 'react';
 import logo from '../assets/logo.svg';
 import {connect} from 'dva';
+const menuData = [{
+  name:'欢迎',
+  path:'/welcome',
+  icon:'user',
+  children:[{
+    name:'欢迎您',
+    path:'/welcome/one',
+    icon:'user'
+
+  }]
+}];
 @connect((loading)=>({
 
 }))
@@ -21,6 +32,7 @@ class BasicLayout extends Component{
           {...this.props}
           logo={logo}
           rightContentRender = {(rightProps) => <div>right content</div>}
+          //menuDataRender={()=>menuData}
         >
           <PageHeaderWrapper>{children}</PageHeaderWrapper>
         </ProLayout>

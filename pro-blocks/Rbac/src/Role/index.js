@@ -11,7 +11,7 @@ import Access from './access';
   eloading:loading.effects['role/fetchOne'],
   aloading:loading.effects['role/fetchAccess']
 }))
-export default class Role extends Component {
+class Role extends Component {
   columns=[
     {
       title:'名称',
@@ -122,3 +122,4 @@ export default class Role extends Component {
   }
   
 }
+export default Role;

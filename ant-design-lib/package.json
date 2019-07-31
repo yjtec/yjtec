@@ -1,6 +1,6 @@
 {
   "name": "ant-design-yjtec",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "files": ["lib", "es"],
   "description": "yjtec desiggn",
   "main": "dist/index.js",
@@ -13,7 +13,8 @@
   "scripts": {
     "dev": "umi-lib doc dev",
     "build": "umi-lib build",
-    "watch": "umi-lib build --watch"
+    "watch": "umi-lib build --watch",
+    "pub":"umi-lib build && npm publish"
   },
   "peerDependencies": {
     "react": "16.x"

@@ -75,7 +75,7 @@ export default class BaseMenu extends PureComponent{
     return <Menu.Item key={item.path}>{this.getMenuItemPath(item)}</Menu.Item>;
   }
   getMenuItemPath = item => {
-    const { name } = item;
+    const name = this.getIntlName(item);
     const itemPath = this.conversionPath(item.path);
     const icon = getIcon(item.icon);
     const { target } = item;

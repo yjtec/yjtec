@@ -29,10 +29,9 @@ class AuthComponent extends React.Component{
     } = this.props;
     const {currentUser} = user;
     const {routes=[]} = route;
-    //const isLogin = currentUser && currentUser.name;
-    const isLogin = true;
+    const isLogin = currentUser && currentUser.name;
     return(
-      <Authorized authority={getRouteAuthority(location.pathname, routes) || ''} noMatch={isLogin ? <Redirect to="/exception/403" /> : <Redirect to="/user/login" />}>{children}</Authorized>
+      <Authorized authority={getRouteAuthority(location.pathname, routes) || ''} noMatch={<div>not match</div>}>{children}</Authorized>
     )
   }
 }
@@ -42,3 +41,5 @@ export default AuthComponent;
 //   const isLogin = auth && auth[0] !== 'guest';
 //   return <div>{children}</div>
 // }
+// 
+// isLogin ? <Redirect to="/exception/403" /> : <Redirect to="/user/login" />

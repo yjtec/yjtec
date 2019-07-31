@@ -5,9 +5,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = _default;
 
-var _path = require("path");
+var _path = _interopRequireWildcard(require("path"));
 
 var _fs = require("fs");
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -16,21 +18,12 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 const debug = require("debug")("umi-plugin-pro-block");
-/*
-export interface ProBlockOption {
-  moveMock?: boolean;
-  moveService?: boolean;
-  modifyRequest?: boolean;
-  autoAddMenu?: boolean;
-}
-*/
-
 
 function _default(api, opts) {
   const paths = api.paths,
         config = api.config;
   debug("options", opts);
-  let hasUtil, hasService, newFileName;
+  let hasUtil, hasService, newFileName, blockName;
   api.beforeBlockWriting(({
     sourcePath,
     blockPath
@@ -39,12 +32,14 @@ function _default(api, opts) {
     hasUtil = (0, _fs.existsSync)((0, _path.join)(utilsPath, "request.js")) || (0, _fs.existsSync)((0, _path.join)(utilsPath, "request.ts"));
     hasService = (0, _fs.existsSync)((0, _path.join)(sourcePath, "./src/service.js"));
     newFileName = blockPath.replace(/^\//, "").replace(/\//g, "");
+    blockName = sourcePath.split(_path.default.sep).pop();
     debug("beforeBlockWriting... hasUtil:", hasUtil, "hasService:", hasService, "newFileName:", newFileName);
   });
 
   api._modifyBlockTarget((target, {
     sourceName
   }) => {
+    //console.log(target);
     //console.log(target,sourceName,newFileName);
     ///Volumes/work/yj/yjtec/ant-design-yjtec/src/pages/User/d/service.js service.js
     if (sourceName === "_mock.js" && opts.moveMock !== false) {
@@ -55,7 +50,8 @@ function _default(api, opts) {
     if (sourceName === "service.js" && hasService && opts.moveService !== false) {
       // src/pages/test/t/service.js -> services/test.t.js
       return (0, _path.join)(paths.absSrcPath, config.singular ? "service" : "services", `${newFileName}.js`);
-    }
+    } //return target.replace(new RegExp(blockName+'/','g'),"");
+
 
     return target;
   }); // umi-request -> @utils/request

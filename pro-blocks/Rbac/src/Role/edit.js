@@ -9,7 +9,7 @@ const {TextArea} = Input;
   loading: loading.effects['role/fetchPut'],
 }))
 @Form.create({name:'role_form'})
-export default class RoleEdit extends Component{
+class RoleEdit extends Component{
   state = {
     visible:true
   }
@@ -98,3 +98,4 @@ export default class RoleEdit extends Component{
     )
   }
 }
+export default RoleEdit;

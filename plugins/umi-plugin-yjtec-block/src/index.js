@@ -1,32 +1,25 @@
-// ref:
-// - https://umijs.org/plugin/develop.html
-import { join } from "path";
+
+import path,{ join } from "path";
 import { existsSync } from "fs";
 
 const debug = require("debug")("umi-plugin-pro-block");
 
-/*
-export interface ProBlockOption {
-  moveMock?: boolean;
-  moveService?: boolean;
-  modifyRequest?: boolean;
-  autoAddMenu?: boolean;
-}
-*/
 
 export default function(api, opts) {
   const { paths, config } = api;
 
   debug("options", opts);
 
-  let hasUtil, hasService, newFileName;
+  let hasUtil, hasService, newFileName,blockName;
   api.beforeBlockWriting(({ sourcePath, blockPath }) => {
+    
     const utilsPath = join(paths.absSrcPath, `utils`);
     hasUtil =
       existsSync(join(utilsPath, "request.js")) ||
       existsSync(join(utilsPath, "request.ts"));
     hasService = existsSync(join(sourcePath, "./src/service.js"));
     newFileName = blockPath.replace(/^\//, "").replace(/\//g, "");
+    blockName = sourcePath.split(path.sep).pop();
     debug(
       "beforeBlockWriting... hasUtil:",
       hasUtil,
@@ -38,6 +31,7 @@ export default function(api, opts) {
   });
 
   api._modifyBlockTarget((target, { sourceName }) => {
+    //console.log(target);
     //console.log(target,sourceName,newFileName);
     ///Volumes/work/yj/yjtec/ant-design-yjtec/src/pages/User/d/service.js service.js
     if (sourceName === "_mock.js" && opts.moveMock !== false) {
@@ -56,6 +50,7 @@ export default function(api, opts) {
         `${newFileName}.js`
       );
     }
+    //return target.replace(new RegExp(blockName+'/','g'),"");
     return target;
   });
 

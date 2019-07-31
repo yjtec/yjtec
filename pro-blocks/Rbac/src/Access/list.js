@@ -11,7 +11,7 @@ const funcData = {
   loading:loading.effects['access/fetch'],
   access:access
 }))
-export default class AccestList extends Component{
+class AccestList extends Component{
   componentDidMount(){
     const {dispatch} = this.props;
     dispatch({
@@ -85,3 +85,4 @@ export default class AccestList extends Component{
     )
   }
 }
+export default AccestList;

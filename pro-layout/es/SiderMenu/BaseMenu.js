@@ -146,7 +146,7 @@ function (_PureComponent) {
     };
 
     _this.getMenuItemPath = function (item) {
-      var name = item.name;
+      var name = _this.getIntlName(item);
 
       var itemPath = _this.conversionPath(item.path);
 

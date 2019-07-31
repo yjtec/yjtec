@@ -1,6 +1,6 @@
-import { fetchLogin, getCaptcha } from '@/services/Login';
+import { fetchLogin, getCaptcha } from '@/services/userlogin';
 export default {
-  namespace: 'login',
+  namespace: 'userLogin',
 
   state: {
     status: undefined,
@@ -8,6 +8,7 @@ export default {
   effects:{
     *login({payload},{call,put}){
       const re = yield call(fetchLogin,payload);
+      console.log(re);
       yield put({
         type:'saveLogin',
         payload:re

@@ -4,9 +4,8 @@ export default [
     component: '../layouts/UserLayout',
     routes: [
       {
-        name: 'login',
         path: '/user/login',
-        component: './User/Login',
+        component: './user/login',
       },
     ],
   }, // app
@@ -24,19 +23,23 @@ export default [
         path: '/welcome',
         name: 'welcome',
         icon: 'smail',
-        authority: ['admin', 'user', 'bbb'], // routes: [
-        //   {
-        //     path: '/welcome/one',
-        //     name: 'analysis',
-        //     icon: 'smail',
-        //     component: './Welcome',
-        //   },
-        // ],
+        authority: ['admin', 'user', 'bbb'],
       },
       {
-        path: '/b',
-        component: './b',
+        name: 'rbac',
+        path: '/rbac',
+        component: './Rbac',
+        routes:[
+          {name:'role',path:'/rbac/role','component':'./Rbac/Role'}
+        ]
+      },      
+      {
+        name: 'exception/403',
+        path: '/exception/403',
+        hideInMenu: true,
+        component: './Exception/403',
       },
+      
     ],
   },
 ];
