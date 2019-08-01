@@ -8,7 +8,6 @@ export default {
   effects:{
     *login({payload},{call,put}){
       const re = yield call(fetchLogin,payload);
-      console.log(re);
       yield put({
         type:'saveLogin',
         payload:re
@@ -22,7 +21,7 @@ export default {
     saveLogin(state,{payload}){
       return {
         ...state,
-        status:payload.errcode == 0 ? 'ok' :'error',
+        status:payload.errcode === 0 ? 'ok' :'error',
         type:payload.type
       }
     }

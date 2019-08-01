@@ -20,26 +20,26 @@ export default [
         redirect: '/welcome/one',
       },
       {
-        path: '/welcome',
-        name: 'welcome',
-        icon: 'smail',
-        authority: ['admin', 'user', 'bbb'],
-      },
-      {
         name: 'rbac',
         path: '/rbac',
         component: './Rbac',
         routes: [
+          {path:'/rbac',redirect:'/rbac/role'},
           {
             name: 'role',
             path: '/rbac/role',
             component: './Rbac/Role',
           },
           {
-            name: 'rbac',
-            path: '/rbac',
-            component: './Rbac',
+            name: 'access',
+            path: '/rbac/access',
+            component: './Rbac/Access',
           },
+          {
+            name: 'menu',
+            path: '/rbac/menu',
+            component: './Rbac/Menu',
+          },          
         ],
       },
       {

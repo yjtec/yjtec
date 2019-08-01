@@ -1,6 +1,8 @@
 import ProLayout,{PageHeaderWrapper} from '@yjtec/pro-layout';
 import styles from './BasicLayout.less';
+import { formatMessage, FormattedMessage } from 'umi-plugin-locale';
 import React, { Component } from 'react';
+import RightContent from '@/components/GlobalHeader/RightContent';
 import logo from '../assets/logo.svg';
 import {connect} from 'dva';
 const menuData = [{
@@ -14,6 +16,7 @@ const menuData = [{
 
   }]
 }];
+
 @connect((loading)=>({
 
 }))
@@ -31,7 +34,8 @@ class BasicLayout extends Component{
         <ProLayout
           {...this.props}
           logo={logo}
-          rightContentRender = {(rightProps) => <div>right content</div>}
+          formatMessage={formatMessage}
+          rightContentRender = {(rightProps) => <RightContent {...rightProps} />}
           //menuDataRender={()=>menuData}
         >
           <PageHeaderWrapper>{children}</PageHeaderWrapper>

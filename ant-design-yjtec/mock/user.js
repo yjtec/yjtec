@@ -31,5 +31,6 @@ export default {
   'GET /api/captcha': getFakeCaptcha,
   'GET /api/currentUser': {
     name: 'Serati Ma',
+    avatar:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564632580831&di=ef5f48ed921597a5121a74ed7dc3b796&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01786557e4a6fa0000018c1bf080ca.png'
   }
 };

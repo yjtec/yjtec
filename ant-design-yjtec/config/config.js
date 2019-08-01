@@ -4,12 +4,11 @@ import path from 'path';
 const plugins = [
   ['umi-plugin-react', {
     antd: true,
-    dva: {
-      hmr: true
-    },
+    dva: true,
     locale: {
-      enable: true,
-      default: 'zh-CN'
+      default: 'zh-CN',
+      antd: true,
+      baseNavigator: true
     }
   }],
   ['umi-plugin-yjtec-block', {
@@ -40,4 +39,13 @@ export default {
       return localName;
     },
   },
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:8000/api",
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/api": ""
+      }
+    }
+  }
 }
