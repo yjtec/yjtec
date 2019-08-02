@@ -12,6 +12,7 @@
     "dev": "umi dev"
   },
   "dependencies": {
+    "ant-design-yjtec": "^0.0.4",
     "omit.js": "^1.0.2",
     "react": ">=16.0.0",
     "yjtec-request": "^1.0.1"

@@ -4,7 +4,7 @@ import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import Link from 'umi/link';
 import { Checkbox, Alert, Icon } from 'antd';
 import styles from './index.less';
-import Login from 'ant-design-yjtec/lib/Login';
+import Login from '@/components/Login';
 const {Tab,UserName,Password,Mobile,Submit,Captcha} = Login;
 @connect(({ BLOCK_NAME_CAMEL_CASE, loading })=>({
   BLOCK_NAME_CAMEL_CASE,
