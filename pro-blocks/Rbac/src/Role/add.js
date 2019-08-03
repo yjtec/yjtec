@@ -71,6 +71,11 @@ class RoleAdd extends Component {
             rules:[{required:true,message:'请输入名称'}],
           })(<Input />)}
           </FormItem>
+          <FormItem label="标识">
+          {getFieldDecorator('name',{
+            rules:[{required:true,message:'请输入标识'}],
+          })(<Input />)}
+          </FormItem>
           <FormItem label="上级">
           {getFieldDecorator('pid',{
           })(<TreeSelect treeData={roles} placeholder="不选默认为一级" />)}

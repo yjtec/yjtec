@@ -82,6 +82,12 @@ class RoleEdit extends Component{
             rules:[{required:true,message:'请输入名称'}],
           })(<Input />)}
           </FormItem>
+          <FormItem label="标识">
+          {getFieldDecorator('name',{
+            initialValue:one.name,
+            rules:[{required:true,message:'请输入标识'}],
+          })(<Input />)}
+          </FormItem>          
           <FormItem label="上级">
           {getFieldDecorator('pid',{
             initialValue:[one.pid],
