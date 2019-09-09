@@ -83,7 +83,7 @@ var ApiSign = function () {
       for (var i in tmpParams) {
         if (typeof tmpParams[i] !== 'undefined' && tmpParams[i]) {
           paramStr += '' + i + tmpParams[i];
-        } else if (tmpParams[i] == 0) {
+        } else if (tmpParams[i] === 0) {
           paramStr += i + '0';
         } else if (tmpParams[i] === false) {
           paramStr += i + 'false';
