@@ -1,11 +1,12 @@
 {
   "name": "yjtec-sign",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "ant design umi check sign",
   "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build":"babel src -d lib"
+    "build":"babel src -d lib",
+    "watch":"babel src -d lib --watch"
   },
   "repository": {
     "type": "git",

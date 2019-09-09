@@ -41,7 +41,7 @@ var ApiSign = function () {
     key: 'sign',
     value: function sign(uri, options) {
       if (process.env.NODE_ENV != 'production') {
-        return _extends({}, options);
+        //return {...options}
       }
       var urlParams = _qs2.default.parse(_url2.default.parse(uri).query);
 
@@ -83,9 +83,9 @@ var ApiSign = function () {
       for (var i in tmpParams) {
         if (typeof tmpParams[i] !== 'undefined' && tmpParams[i]) {
           paramStr += '' + i + tmpParams[i];
-        } else if (typeof tmpParams[i] === 0) {
+        } else if (tmpParams[i] == 0) {
           paramStr += i + '0';
-        } else if (typeof tmpParams[i] === false) {
+        } else if (tmpParams[i] === false) {
           paramStr += i + 'false';
         } else {
           paramStr += '' + i;
