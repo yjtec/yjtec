@@ -17,7 +17,7 @@ class ApiSign{
     const urlParams = qs.parse(url.parse(uri).query);
 
     let postParams = {};
-    const isPost = options.method == 'post' || options.method == 'put';
+    const isPost = options.method == 'post' || options.method == 'put' || options.method == 'delete';
     if(isPost){
       postParams = options.data;
     }

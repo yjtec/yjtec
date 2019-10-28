@@ -46,7 +46,7 @@ var ApiSign = function () {
       var urlParams = _qs2.default.parse(_url2.default.parse(uri).query);
 
       var postParams = {};
-      var isPost = options.method == 'post' || options.method == 'put';
+      var isPost = options.method == 'post' || options.method == 'put' || options.method == 'delete';
       if (isPost) {
         postParams = options.data;
       }
