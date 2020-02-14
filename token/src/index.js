@@ -20,7 +20,8 @@ class Token{
           ...options,
           headers:{
             ...options.headers,
-            token:token
+            token:token,
+            ticket:token
           }
         }
       })

@@ -46,7 +46,8 @@ var Token = function () {
           url: url,
           options: _extends({}, options, {
             headers: _extends({}, options.headers, {
-              token: token
+              token: token,
+              ticket: token
             })
           })
         };
